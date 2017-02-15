@@ -1,0 +1,63 @@
+<?page title="Appsquad" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="COMPONENTS MASTER" border="none" apply="org.zkoss.bind.BindComposer" 
+     viewModel="@id('vm') @init('com.appsquad.paybooks.controller.ComponentMasterController')">
+
+
+<div>
+		<tabbox>
+			<tabs>
+				<tab label="Add Components"></tab>
+				<tab label="Existing Components"></tab>
+			
+			</tabs>
+			<tabpanels>
+	            <tabpanel>
+					<div>
+					   <hlayout spacing="20px">	
+						   <textbox placeholder="Component Name" value="@bind(vm.componentMasterBean.component)"/>
+						   <combobox width="100px">
+						   	<comboitem label="Earnings" value="@bind(vm.componentMasterBean.componentTypeId)"/>
+						   	<comboitem label="Deductions" value="@bind()"/>
+						   </combobox>
+						   <button label="Save Components" onClick="@command('onClickSave')" style="font-weight: bold"/>	
+				       </hlayout> 		
+					   	
+					   
+					</div>
+				</tabpanel>
+				
+				<tabpanel>
+					<div>
+					   <grid model="@bind(vm.componentBeanList)" mold="paging" pageSize="10">
+					   		<columns>
+					   		    <column label="Sl No" align="center" width="50px"></column>
+					   			<column label="Component" align="center"></column>
+					   			<column label="Active" align="center"></column>
+					   			<column label="Action" align="left"></column>
+					   		</columns>
+					   		<rows>
+					   		  <template name="model" var = "v">
+					   		    <row>
+					   				<label value="@bind(v.slNo)"></label>
+					   				<textbox value="@bind(v.component)" readonly="true" width="100%"></textbox>
+					   				<textbox value="@bind(v.isActive)" readonly="true" width="100%"></textbox>
+					   				<button label="Update" onClick="@command('onClickUpdate', bean = v)" style="font-weight: bold"></button>
+					   			</row>
+					   		  </template>	
+					   		</rows>
+					   		
+					   
+					   </grid>
+					</div>
+				</tabpanel>
+	
+		 </tabpanels>	
+		</tabbox>
+	</div>
+
+
+
+
+</window>
+</zk>

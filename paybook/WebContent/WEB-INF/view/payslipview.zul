@@ -1,0 +1,53 @@
+<?page title="View Payslip" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="" border="normal" width="72%" closable="true" apply="org.zkoss.bind.BindComposer" 
+	viewModel="@id('vm') @init('com.appsquad.paybooks.controller.PayslipViewController')">
+<caption label="@bind(vm.message)" style="font-weight:bold;color:red"/>
+<hlayout spacing="25px">
+	<grid width="460px" model="@bind(vm.earningList)">
+		<columns>
+			<column label="Earnings" align="left" width="330px"/>
+			<column label="Amount(Rs.)" align="right" width="120px"/>
+		</columns>
+		<rows>
+			<template name="model" var="v">
+			<row>
+				<label value="@bind(v.component)"/>
+				<label value="@bind(v.componentAmount)"/>
+			</row>
+			</template>
+		</rows>
+	</grid>
+	<grid width="460px" model="@bind(vm.deductionList)">
+		<columns>
+			<column label="Deductions" align="left" width="330px"/>
+			<column label="Amount(Rs.)" align="right" width="120px"/>
+		</columns>
+		<rows>
+			<template name="model" var="v">
+			<row>
+				<label value="@bind(v.component)"/>
+				<label value="@bind(v.componentAmount)"/>
+			</row>
+			</template>
+		</rows>
+	</grid>
+</hlayout>
+<hlayout spacing="40px">
+<div align="left">
+	<label value="Gross earnings " style="font-weight:bold"/>
+	<label value="@bind(vm.earnTotal)" style="margin-left:308px"/>
+</div>
+<div align="right">
+	<label value="Gross deductions " style="font-weight:bold"/>
+	<label value="@bind(vm.dedTotal)" style="margin-left:308px"/>
+</div>
+</hlayout>
+
+<separator></separator>
+<div align="center">
+	<label value="Take Home" style="font-weight:bold"/>
+	<label value="@bind(vm.totSal)"/>
+</div>
+</window>
+</zk>

@@ -1,0 +1,55 @@
+<?page title="Company Master" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Company Master" border="normal" apply="org.zkoss.bind.BindComposer" 
+     viewModel="@id('vm') @init('com.appsquad.paybooks.controller.CompanyMasterController')">
+<div align="center">
+	<grid width="50%">
+		<columns>
+			<column align="right"/>
+			<column align="left"/>
+		</columns>
+		<rows>
+			<row>
+				<label value="Company Name" style="font-weight:bold"/>
+				<textbox value="@bind(vm.companyBean.companyName)"/>
+			</row>
+			<row>
+				<label value="Company Address" style="font-weight:bold"/>
+				<textbox value="@bind(vm.companyBean.address)" multiline="true" rows="2" width="100%"/>
+			</row>
+			<row>
+				<label value="Work Location" style="font-weight:bold"/>
+				<textbox value="@bind(vm.companyBean.workLocation)" />
+			</row>	
+			<row>
+				<button label="Save" style="font-weight:bold" onClick="@command('onClickSave')"/>
+				<button label="Cancel" style="font-weight:bold" onClick="@command('onClickCancel')"/>
+			</row>
+		</rows>
+	</grid>
+	<separator/>
+	<grid model="@bind(vm.companyBeanList)">
+		<columns>
+			<column label="Company Name" align="center"/>
+			<column label="Company Address" align="center"/>
+			<column label="Work Location" align="center"/>
+			<column label="Update" align="center"/>
+		</columns>
+		<rows>
+			<template name="model" var="v">
+				<row>
+					<textbox value="@bind(v.companyName)" readonly="@bind(v.disabled)" width="100%"/>
+					<textbox value="@bind(v.address)" readonly="@bind(v.disabled)"  width="100%"/>
+					<textbox value="@bind(v.workLocation)" readonly="@bind(v.disabled)" width="100%"/>
+					<hlayout>
+						<button label="Edit" onClick="@command('onClickEdit',bean=v)"/>
+						<button label="Update" onClick="@command('onClickUpdate',bean=v)"/>
+					</hlayout>
+					
+				</row>
+			</template>
+		</rows>
+	</grid>
+</div>
+</window>
+</zk>

@@ -1,0 +1,90 @@
+<?page title="Appsquad" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="GENERATE PAYSLIP" border="none" apply="org.zkoss.bind.BindComposer" 
+	viewModel="@id('vm') @init('com.appsquad.paybooks.controller.GeneratePayslipController')">
+	
+	
+	<div>
+		<div>
+			<hlayout spacing="30px">
+			<bandbox autodrop="true" readonly="true" id="empnm" value="@bind(vm.employeeMasterBean.employeeName)" 
+				  		placeholder="Select Employee" width="180px">
+						<bandpopup>	
+							<hbox>
+								<textbox value="@bind(vm.employeeMasterBean.employeeSearch)" onChange="@command('onChangeEmployeeName')" 
+									placeholder="Search by Employee" width="150px"></textbox>
+								<button label="Serach" onClick="@command('onChangeEmployeeName')"></button>
+								<button label="Clear" onClick="@command('onClearEmployeeName')"></button>
+							</hbox>
+							<space></space>
+							<listbox width="280px" model="@bind(vm.employeeList)" 
+							     selectedItem="@bind(vm.employeeMasterBean)" onSelect="@command('onSelctEmployeeName')" mold="paging" pageSize="5">
+								<listhead sizable="true">
+									<listheader label="Employee"></listheader>
+								</listhead>
+								
+								<template name="model" var = "v">
+								<listitem>
+								  <listcell label="@load(v.employeeName)"></listcell>
+								</listitem>
+							    </template>
+							    
+							</listbox>
+						</bandpopup>
+					</bandbox>
+			  <combobox model="@bind(vm.monthist)" selectedItem="@bind(vm.monthMasterBean)" value="@bind(vm.monthMasterBean.month)" readonly="true" placeholder="Select Month" width="150px">
+			  	<template name="model" var = "v">
+			  		<comboitem value="@bind(v.monthId)" label="@bind(v.month)"></comboitem>
+			  	</template>
+			  </combobox>
+			  
+			  <combobox model="@bind(vm.yearist)" selectedItem="@bind(vm.yearMasterBean)" 
+			  value="@bind(vm.yearMasterBean.yr)" readonly="true" width="150px" placeholder="Select Year">
+			  	<template name="model" var = "v">
+			  		<comboitem value="@bind(v.yearId)" label="@bind(v.yr)"></comboitem>
+			  	</template>
+			  </combobox>
+			  <button label="Load all" onClick="@command('onClickClear')"/>
+			</hlayout>
+		</div>
+		<space></space>
+		<div>
+		<grid model="@bind(vm.generatePayslipBeanList)">
+			<columns>
+				<column label="Sl No" width="50px" align="center"/>
+				<column label="Check" width="65px" align="center"/>
+				<column label="Employee Name" align="center"/>
+				<column label="Employee Code" align="center"/>
+				<column label="Designation" align="center"/>
+				<column label="Present Days" align="center"/>
+				<column label="Action" align="center"/>
+			</columns>
+			<rows>
+			  <template name="model" var = "v">
+				<row>
+					<label value="@bind(v.slNo)"></label>
+					<checkbox checked="@bind(v.check)"></checkbox>
+					<textbox value="@bind(v.employeeName)" readonly="true"></textbox>
+					<textbox value="@bind(v.employeeCode)" readonly="true"></textbox>
+					<textbox value="@bind(v.designation)" readonly="true"></textbox>
+					<intbox value="@bind(v.presentDays)"></intbox>
+					<hlayout>
+						<button label="View" onClick="@command('onClickDetails', bean = v)" style="font-weight : bold" ></button>
+						<button label="Generate Slip" onClick="@command('downloadAndSend', bean = v)" style="font-weight : bold"></button>
+						<button label="Mail" onClick="@command('onClickMail', bean = v)" style="font-weight : bold"></button>
+					</hlayout>
+				</row>
+			  </template>	
+			</rows>
+		</grid>	
+		</div>
+		<space></space>
+		<div align="center">
+			<button label="Generate Payslip" onClick="@command('onCLickGeneratePayslip')" 
+			style="font-weight : bold" visible="false"></button>
+		</div>
+	</div>
+	
+	
+</window>
+</zk>

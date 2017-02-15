@@ -1,0 +1,131 @@
+<?page title="Employees" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="EMPLOYEE INFORMATION" border="none" apply="org.zkoss.bind.BindComposer" 
+     viewModel="@id('vm') @init('com.appsquad.paybooks.controller.EmployeeMasterController')">
+	
+	<div>
+		<tabbox>
+			<tabs>
+				<tab label="Add Employee"/>
+				<tab label="Existing Employee" onClick="@command('onClickExistingEmployee')"/>
+			
+			</tabs>
+			<tabpanels>
+	            <tabpanel>
+					<div>
+					   <!-- <hlayout spacing="20px">	
+						   <textbox placeholder="Employee Code" value="@bind(vm.employeeMasterBean.employeeCode)"></textbox>	
+						   <textbox placeholder="Employee Name" value="@bind(vm.employeeMasterBean.employeeName)"></textbox>	
+				       </hlayout>  -->		
+					   
+					   <grid>
+					   	<columns sizable="true">
+					   		<column align="right"/>
+					   		<column align="left"/>
+					   		<column align="right"/>
+					   		<column align="left"/>
+					   	</columns>
+					   	<rows>
+					   		<row>
+					   			<label value="Employee Code" style="font-weight:bold" />
+					   			<textbox value="@bind(vm.employeeMasterBean.employeeCode)" width="100%"/>
+					   			<label value="Employee Name" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.employeeName)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label value="Designation" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.designation)" width="100%"/>
+					   			<label value="Department" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.department)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label value="Date of joining" style="font-weight:bold"/>
+					   			<datebox format="dd-MM-yyyy" readonly="true" value="@bind(vm.employeeMasterBean.dojSql)"/>
+					   			<label value="Bank Ac/No" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.bankAcNo)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label value="ESI Number" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.esiNumber)" width="100%"/>
+					   			<label value="PF No" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.pfNumber)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label value="UAN" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.uanNumber)" width="100%"/>
+					   			<label value="EmailId" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.emailID)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label/>
+					   			 <button label="Save Employee Details" onClick="@command('onClickSave')" style="font-weight: bold"/>
+					   			 <button label="Cancel" onClick="@command('onClickCancel')" style="font-weight: bold"/>
+					   			 <label/>
+					   		</row>
+					   	</rows>
+					   	
+					   </grid>
+					  
+					</div>
+				</tabpanel>
+				
+				<tabpanel>
+					<div>
+					<bandbox autodrop="true" readonly="true" id="empnm" value="@bind(vm.employeeMasterBean.employeeName)" 
+				  		placeholder="Select Employee" width="180px">
+						<bandpopup>	
+							<hbox>
+								<textbox value="@bind(vm.employeeMasterBean.employeeSearch)" onChange="@command('onChangeEmployeeName')" 
+									placeholder="Search by Employee" width="150px"></textbox>
+								<button label="Serach" onClick="@command('onChangeEmployeeName')"></button>
+								<button label="Clear" onClick="@command('onClearEmployeeName')"></button>
+							</hbox>
+							<space></space>
+							<listbox width="280px" model="@bind(vm.employeeList)" 
+							     selectedItem="@bind(vm.employeeMasterBean)" onSelect="@command('onSelctEmployeeName')" mold="paging" pageSize="5">
+								<listhead sizable="true">
+									<listheader label="Employee"></listheader>
+								</listhead>
+								
+								<template name="model" var = "v">
+								<listitem>
+								  <listcell label="@load(v.employeeName)"></listcell>
+								</listitem>
+							    </template>
+							    
+							</listbox>
+						</bandpopup>
+					</bandbox>
+					<separator></separator>
+					   <grid model="@bind(vm.employeeMasterBeanList)" mold="paging" pageSize="14">
+					   		<columns>
+					   		    <column label="Sl No" align="center" width="50px"></column>
+					   			<column label="Employee Name" align="center"></column>
+					   			<column label="Employee Code" align="center"></column>
+					   			<column label="Date of Joining" visible="false"></column>
+					   			<column label="Current Employee" align="center"></column>
+					   			<column label="Action" align="left"></column>
+					   		</columns>
+					   		<rows>
+					   		  <template name="model" var = "v">
+					   		    <row>
+					   				<label value="@bind(v.slNo)"></label>
+					   				<textbox value="@bind(v.employeeName)" readonly="true" width="100%"></textbox>
+					   				<textbox value="@bind(v.employeeCode)" readonly="true" width="100%"></textbox>
+					   				<textbox value="@bind(v.dojStr)" visible="false" width="100%"></textbox>
+					   				<textbox value="@bind(v.curentEmployee)" readonly="true" width="100%"></textbox>
+					   				<button label="Edit" onClick="@command('onClickUpdate', bean = v)"></button>
+					   			</row>
+					   		  </template>	
+					   		</rows>
+					   		
+					   
+					   </grid>
+					</div>
+				</tabpanel>
+	
+		 </tabpanels>	
+		</tabbox>
+	</div>
+</window>
+</zk>

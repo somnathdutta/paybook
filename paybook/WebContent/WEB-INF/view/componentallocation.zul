@@ -1,0 +1,147 @@
+<?page title="Appsquad" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="COMPONENT ALLOCATION" border="none" apply="org.zkoss.bind.BindComposer" 
+  viewModel="@id('vm') @init('com.appsquad.paybooks.controller.ComponentAllocationController')">
+  
+  <div>
+  	<tabbox>
+		<tabs>
+			<tab label="NEW ALLOCATION"></tab>
+			<tab label="EXISTIING ALLOCATION"></tab>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<div>
+				  <hlayout spacing="50px">
+				  	
+				  	
+				  	<bandbox autodrop="true" readonly="true" id="empnm" value="@bind(vm.employeeMasterBean.employeeName)" 
+				  		placeholder="Select Employee" width="180px">
+						<bandpopup>	
+							<hbox>
+								<textbox value="@bind(vm.employeeMasterBean.employeeSearch)" onChange="@command('onChangeEmployeeName')" 
+									placeholder="Search by Employee" width="150px"></textbox>
+								<button label="Serach" onClick="@command('onChangeEmployeeName')"></button>
+								<button label="Clear" onClick="@command('onClearEmployeeName')"></button>
+							</hbox>
+							<space></space>
+							<listbox width="280px" model="@bind(vm.employeeList)" 
+							     selectedItem="@bind(vm.employeeMasterBean)" onSelect="@command('onSelctEmployeeName')" mold="paging" pageSize="5">
+								<listhead sizable="true">
+									<listheader label="Employee"></listheader>
+								</listhead>
+								
+								<template name="model" var = "v">
+								<listitem>
+								  <listcell label="@load(v.employeeName)"></listcell>
+								</listitem>
+							    </template>
+							    
+							</listbox>
+						</bandpopup>
+					</bandbox>
+				  	<button label="Clear" onClick="@command('onClickClear')" style="font-weight: bold"></button>
+				  </hlayout>
+				  <space></space>
+				  
+				  <grid model="@bind(vm.componentList)" mold="paging" pageSize="8">
+				  	<columns>
+				  		<column label="Sl no" width="100px"></column>
+				        <column label="Check" width="150px"></column>
+				        <column label="Component" width="300px"></column>
+				        <column label="Amount"></column>
+				        
+				  	</columns>
+				  	<rows>
+				  	  <template name="model" var = "v">
+				  		<row>
+				  			<label value="@bind(v.slNo)"></label>
+				  			<checkbox checked="@bind(v.checked)"></checkbox>
+				  			<textbox readonly="true" value="@bind(v.component)" width="100%"></textbox>
+				  			<doublebox value="@bind(v.amount)"></doublebox>
+				  		</row>
+				  	  </template>	
+				  	</rows>
+				  
+				  </grid>
+				  <space></space>
+				  <div align="center">
+				  	<button label="Save Allocation" style="font-weight: bold" onClick="@command('onClickAllocationSave')"></button>
+				  
+				  </div>
+				</div>
+			</tabpanel>
+			<tabpanel>
+				<div>
+				<div>
+				  <hlayout spacing="50px">
+				  	
+				  	
+				  	<bandbox autodrop="true" readonly="true" id="exempnm" value="@bind(vm.existingemployeeMasterBean.employeeName)" 
+				  		placeholder="Select Employee" width="180px">
+						<bandpopup>	
+							<hbox>
+								<textbox value="@bind(vm.existingemployeeMasterBean.employeeSearch)" onChange="@command('onChangeExEmployeeName')" 
+									placeholder="Search by Employee" width="150px"></textbox>
+								<button label="Serach" onClick="@command('onChangeExEmployeeName')"></button>
+								<button label="Clear" onClick="@command('onClearExEmployeeName')"></button>
+							</hbox>
+							<space></space>
+							<listbox width="280px" model="@bind(vm.employeeList)" 
+							     selectedItem="@bind(vm.existingemployeeMasterBean)" onSelect="@command('onSelctExEmployeeName')" mold="paging" pageSize="5">
+								<listhead sizable="true">
+									<listheader label="Employee"></listheader>
+								</listhead>
+								
+								<template name="model" var = "v">
+								<listitem>
+								  <listcell label="@load(v.employeeName)"></listcell>
+								</listitem>
+							    </template>
+							    
+							</listbox>
+						</bandpopup>
+					</bandbox>
+				  	<button label="Clear" onClick="@command('onClickClearEx')" style="font-weight: bold"></button>
+				  </hlayout>
+				  <space></space>
+				  
+				  <grid model="@bind(vm.exAllocatedcomponentList)" mold="paging" pageSize="8">
+				  	<columns>
+				  		<column label="Sl no" width="100px"></column>
+				        <column label="Check" width="150px"></column>
+				        <column label="Component" width="300px"></column>
+				        <column label="Amount"></column>
+				        <column label="Active" width="250px"></column>
+				        
+				  	</columns>
+				  	<rows>
+				  	  <template name="model" var = "v">
+				  		<row>
+				  			<label value="@bind(v.slNo)"></label>
+				  			<checkbox checked="@bind(v.checked)"></checkbox>
+				  			<textbox readonly="true" value="@bind(v.component)" width="100%"></textbox>
+				  			<doublebox value="@bind(v.amount)"></doublebox>
+				  			<combobox readonly="true" value="@bind(v.isActive)">
+				  				<comboitem label="YES"></comboitem>
+				  				<comboitem label="NO"></comboitem>
+				  			</combobox>
+				  		</row>
+				  	  </template>	
+				  	</rows>
+				  
+				  </grid>
+				  <space></space>
+				  <div align="center">
+				  	<button label="Add new component" style="font-weight: bold"  visible="false" />
+				  	<button label="Update Allocation" style="font-weight: bold" onClick="@command('onClickExAllocationUpdate')"/>
+				  
+				  </div>
+				</div>
+				</div>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+  </div>		
+</window>
+</zk>

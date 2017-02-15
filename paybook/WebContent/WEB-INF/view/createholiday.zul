@@ -1,0 +1,132 @@
+<?page title="Create Holiday" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="CREATE HOLIDAY" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('com.appsquad.paybooks.controller.HolidayMasterController')">
+		<tabbox>
+			<tabs>
+				<tab label="Create Holiday" onClick="@command('onClickNew')" />
+				<tab label="Show Holiday" onClick="@command('onClickExisting')" />
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<grid>
+						<columns>
+							<column label="Year" align="center" width="120px"/>
+							<column label="Month" align="center" width="120px" />
+							<column label="Day" align="center" width="105px" />
+							<!-- <column label="Choose date" align="center"/> -->
+
+							<column label="Name of Holiday"
+								align="center" />
+							<column label="Add" align="center" />
+						</columns>
+						<rows>
+							<row>
+								<combobox model="@bind(vm.yearList)" 
+									selectedItem="@bind(vm.yearMasterBean)"
+									value="@bind(vm.yearMasterBean.yr)" readonly="true"
+									width="100%" placeholder="Select Year">
+									<template name="model" var="v">
+										<comboitem
+											value="@bind(v.yearId)" label="@bind(v.yr)">
+										</comboitem>
+									</template>
+								</combobox>
+								<combobox model="@bind(vm.monthList)"
+									selectedItem="@bind(vm.monthMasterBean)"
+									onSelect="@command('onSelectMonth')"
+									value="@bind(vm.monthMasterBean.month)" readonly="true"
+									placeholder="Select Month" width="100%">
+									<template name="model" var="v">
+										<comboitem
+											value="@bind(v.monthId)" label="@bind(v.month)">
+										</comboitem>
+									</template>
+								</combobox>
+								<combobox model="@bind(vm.dayList)"
+									selectedItem="@bind(vm.day)" onSelect="@command('onSelectDay')"
+									value="@bind(vm.day)" readonly="true" placeholder="Select Day"
+									width="100%">
+									<template name="model" var="v">
+										<comboitem value="@load(v)"
+											label="@load(v)">
+										</comboitem>
+									</template>
+								</combobox>
+								<!-- <datebox format="dd-MMM-yyyy" open="@bind(vm.datePopUp)" 
+									value="@bind(vm.selectedDateOfYear)" onChange="@command('onChangeDate')"/> -->
+								<textbox value="@bind(vm.nameOfHoliday)"
+									disabled="@bind(vm.holidayNameDisabled)" width="100%" />
+
+								<button label="Add"
+									onClick="@command('onClickAdd')" />
+							</row>
+						</rows>
+					</grid>
+
+					<grid model="@bind(vm.holidayList)">
+						<columns>
+							<column label="Day" align="center" />
+							<!-- <column label="Month" align="center" /> -->
+							<column label="Holiday Name" align="center" />
+							<column label="Remove" align="center" />
+						</columns>
+						<rows>
+							<template name="model" var="v">
+								<row>
+									<!-- <textbox value="@bind(v.day)" readonly="true" width="100%" />
+										<textbox value="@bind(v.month)" readonly="true" width="100%" /> -->
+									<datebox format="dd-MMM-yyyy"
+										buttonVisible="false" value="@bind(v.dateOfYear)"
+										readonly="true" width="100%" />
+									<textbox
+										value="@bind(v.nameOfHoliday)" readonly="true" width="100%" />
+									<button label="Remove"
+										onClick="@command('onClickRemove',bean=v)" />
+								</row>
+							</template>
+
+						</rows>
+					</grid>
+					<separator></separator>
+					<div align="center">
+						<button label="Save" onClick="@command('onClickSave')"/>
+					</div>
+				</tabpanel>
+
+				<tabpanel>
+					<combobox model="@bind(vm.dbYearList)"
+						selectedItem="@bind(vm.yearBean)" onSelect="@command('onSelectYear')"
+						value="@bind(vm.yearBean.yr)" readonly="true" width="100px"
+						placeholder="Select Year">
+						<template name="model" var="v">
+							<comboitem value="@bind(v.yearId)"
+								label="@bind(v.yr)">
+							</comboitem>
+						</template>
+					</combobox>
+					<separator></separator>
+					<grid model="@bind(vm.existingHolidayList)">
+						<columns>
+							<column label="Date" align="center"/>
+							<column label="Holiday" align="center"/>
+							<column label="Action" align="center"/>
+						</columns>
+						<rows>
+							<template name="model" var="v">
+								<row>
+									<datebox format="dd-MMM-yyyy" buttonVisible="false" value="@bind(v.dateOfYear)"
+									readonly="true" width="100%"/>
+									<textbox value="@bind(v.nameOfHoliday)" readonly="true" width="100%"/>
+									<button label="Edit"/>
+								</row>
+							</template>
+						</rows>
+					</grid>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+	</window>
+</zk>

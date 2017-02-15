@@ -1,0 +1,120 @@
+<?page title="Paybook"?>
+<zk>
+<window title="" border="none" height="100%" apply="org.zkoss.bind.BindComposer" 
+       viewModel="@id('vm') @init('com.appsquad.paybooks.controller.LoginController')">
+	<style>
+form {
+    border: 3px solid #f1f1f1;
+}
+
+
+	.logintxtbox{
+	width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+	 font-family: consolas;
+    
+     font-size : 19px;
+	}
+	.mybutton {
+   // background: #4CAF50;
+    color: green;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    width: 100%;
+    font-family: 'Roboto Slab', serif;
+     font-weight: bold;
+     font-size : 19px;
+}
+.imgcontainer {
+    text-align: center;
+    margin: 18px 0 0 0;
+   width:30%;
+     background: #F0E68C;
+}
+
+.avatar {
+    height: 35%;
+    border-radius: 50%;
+    margin: 4px;
+    border:1px red;
+}
+
+.container {
+    padding: 16px;
+    width:30%;
+    background: #F0E68C;
+}
+.header{
+	    	background-color : transparent;
+	    	height:40px;
+	    }
+	    .logo{
+	    font-family: 'Roboto Slab', serif;
+    color: #8dbd32;
+    font-size: 30px;
+    font-weight: 300;
+	    }
+		.section{
+	    	
+	    	height : 320px;
+	    }
+</style>
+
+	<div sclass="header" align="center" >
+			<div style="margin-top:25px;background-color :#ebebeb;border:0.02px goove">
+				<label sclass="logo" value="Paybook"/>
+			</div>
+			
+	</div>
+	<div sclass="section" align="center">
+			<div class="imgcontainer">
+			<image src="images/avatar.png" sclass="avatar" />
+		</div>
+
+		<div class="container">
+			<label value="Username" style="font-weight:bold;font-size : 15px;" />
+			<textbox value="@bind(vm.loginBean.userId)" sclass="logintxtbox" placeholder="Enter Username" />
+
+			<label value="Password" style="font-weight:bold;font-size : 15px;" />
+			<textbox value="@bind(vm.loginBean.password)" sclass="logintxtbox" 
+			type="password" placeholder="Enter Password" onOK="@command('onCLickLogin')"/>
+
+			<button label="Login" sclass="mybutton" onClick="@command('onCLickLogin')"/>
+
+		</div>
+
+		<div class="container" style="background-color:#f1f1f1">
+			<a href="#">Forgot password?</a>
+		</div>
+		
+</div>
+		
+	
+
+	<!-- <hlayout >  
+	  		<div width="1085px" height="500px" style="border : 1px solid" >
+	  		
+	  		</div>
+	  		<div style="border : 1px solid" width="255px" height="500px">
+	  		<vbox>
+	  		<textbox placeholder="User Id" value="@bind(vm.loginBean.userId)"></textbox>
+	  		<textbox placeholder="Password" value="@bind(vm.loginBean.password)" type="password"></textbox>
+	  		<button label="Login" onClick="@command('onCLickLogin')"></button>
+	  		
+	  		</vbox>
+	  		
+	  		
+	  		</div>	
+	  		</hlayout> -->
+
+
+
+</window>
+</zk>
+
+
