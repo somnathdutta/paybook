@@ -65,6 +65,8 @@ public class CompanyMasterController {
 	@NotifyChange("*")
 	public void onClickEdit(@BindingParam("bean")CompanyBean companyBean){
 		companyBean.setDisabled(false);
+		companyBean.setEditVisibility(false);
+		companyBean.setUpdateVisibility(true);
 	}
 	
 	@Command
@@ -72,6 +74,16 @@ public class CompanyMasterController {
 	public void onClickUpdate(@BindingParam("bean")CompanyBean companyBean){
 		CompanyService.updateCompany(companyBean, userId);
 		companyBean.setDisabled(true);
+		companyBean.setEditVisibility(true);
+		companyBean.setUpdateVisibility(false);
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onClickRowCancel(@BindingParam("bean")CompanyBean companyBean){
+		companyBean.setDisabled(true);
+		companyBean.setEditVisibility(true);
+		companyBean.setUpdateVisibility(false);
 	}
 	
 	public void clear(){

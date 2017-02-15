@@ -4,7 +4,7 @@ public class CompanyBean {
 
 	private String companyName,address,workLocation;
 	private int companyId;
-	private boolean disabled = true;
+	private boolean disabled = true,editVisibility = true,updateVisibility = false;
 	
 	public String getCompanyName() {
 		return companyName;
@@ -35,5 +35,17 @@ public class CompanyBean {
 	}
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+	public boolean isEditVisibility() {
+		return editVisibility;
+	}
+	public void setEditVisibility(boolean editVisibility) {
+		this.editVisibility = editVisibility;
+	}
+	public boolean isUpdateVisibility() {
+		return updateVisibility;
+	}
+	public void setUpdateVisibility(boolean updateVisibility) {
+		this.updateVisibility = updateVisibility;
 	}
 }

@@ -42,8 +42,9 @@
 					<textbox value="@bind(v.address)" readonly="@bind(v.disabled)"  width="100%"/>
 					<textbox value="@bind(v.workLocation)" readonly="@bind(v.disabled)" width="100%"/>
 					<hlayout>
-						<button label="Edit" onClick="@command('onClickEdit',bean=v)"/>
-						<button label="Update" onClick="@command('onClickUpdate',bean=v)"/>
+						<button label="Edit" style="font-weight:bold"  onClick="@command('onClickEdit',bean=v)" visible="@bind(v.editVisibility)"/>
+						<button label="Update" style="font-weight:bold"  onClick="@command('onClickUpdate',bean=v)"  visible="@bind(v.updateVisibility)"/>
+						<button label="Cancel" style="font-weight:bold" onClick="@command('onClickRowCancel',bean=v)"/>
 					</hlayout>
 					
 				</row>
