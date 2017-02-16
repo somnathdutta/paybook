@@ -44,7 +44,13 @@
 						<menuitem label="Component Allocation" style="font:weight:bold" visible="@bind(vm.componentallocation)"
 						onClick='inclResults.setSrc("/WEB-INF/view/componentallocation.zul")'>
 						</menuitem>	
-						<menuitem label="Payslip" style="font:weight:bold" visible="@bind(vm.salayslip)"
+						<menuitem label="Manage Attendence" style="font:weight:bold" visible="@bind(vm.componentallocation)"
+						onClick='inclResults.setSrc("/WEB-INF/view/manageattendence.zul")'>
+						</menuitem>
+						<menuitem label="Manage Leaves" style="font:weight:bold" visible="@bind(vm.componentallocation)"
+						onClick='inclResults.setSrc("/WEB-INF/view/manageleaves.zul")'>
+						</menuitem>
+						<menuitem label="Run Payslip" style="font:weight:bold" visible="@bind(vm.salayslip)"
 						onClick='inclResults.setSrc("/WEB-INF/view/generatepayslip.zul")'>
 						</menuitem>	
 					</menupopup>
