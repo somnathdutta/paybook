@@ -6,9 +6,9 @@ public class EmployeeMasterBean {
 
 	private Integer slNo;
 	private Integer employeeId;
-	private String employeeCode,designation,department,bankAcNo,esiNumber,
+	private String companyName,employeeCode,password,designation,department,bankAcNo,esiNumber,
 		pfNumber,uanNumber, employeeName, curentEmployee,emailID;
-	
+	private int companyId;
 	private Date dojUtil;
 	private java.sql.Date dojSql,leaveDate;
 	private String dojStr;
@@ -139,6 +139,24 @@ public class EmployeeMasterBean {
 	}
 	public void setLeaveDate(java.sql.Date leaveDate) {
 		this.leaveDate = leaveDate;
+	}
+	public int getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getCompanyName() {
+		return companyName;
+	}
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 	
 	

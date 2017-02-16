@@ -3,34 +3,57 @@ package com.appsquad.paybooks.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.zkoss.zul.Messagebox;
 
+import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
+import com.appsquad.paybooks.model.utils.PropertyFileAccess;
 import com.appsquad.paybooks.sql.EmployeeMasterSql;
 
 public class EmployeeMasterDao {
 
 	public static int saveEmployeeInfo(String userName, EmployeeMasterBean bean){
 		int id =0;
-		
 		try {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
 			try {
 				connection = DatabaseHandler.createConnection();
 				connection.setAutoCommit(false);
-				preparedStatement = Pbpstm.createQuery(connection, EmployeeMasterSql.employeeinsertsql, 
-						Arrays.asList(bean.getEmployeeCode().trim(), bean.getEmployeeName().trim(), 
-									  bean.getDesignation(),bean.getDepartment(),bean.getDojSql(),
-									  bean.getBankAcNo(),bean.getEsiNumber(),bean.getPfNumber(),
-									  bean.getUanNumber(),bean.getEmailID(),userName, userName));
-				id = preparedStatement.executeUpdate();
+				preparedStatement = connection.prepareStatement(PropertyFileAccess.getPropertyObject().getPropValues("employeeinsertsql", "sql.properties"), 
+						Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setInt(1, bean.getCompanyId());
+				preparedStatement.setString(2, bean.getEmployeeCode().trim());
+				preparedStatement.setString(3, bean.getPassword().trim()); 
+				preparedStatement.setString(4, bean.getEmployeeName().trim()); 
+				preparedStatement.setString(5, bean.getDesignation());
+				preparedStatement.setString(6,bean.getDepartment());
+				preparedStatement.setDate(7,bean.getDojSql());
+				preparedStatement.setString(8, bean.getBankAcNo());
+				preparedStatement.setString(9,bean.getEsiNumber());
+				preparedStatement.setString(10,bean.getPfNumber());
+				preparedStatement.setString(11, bean.getUanNumber());
+				preparedStatement.setString(12,bean.getEmailID().trim());
+				preparedStatement.setString(13,userName);
+				preparedStatement.setString(14,userName);
+				preparedStatement.execute();
 				connection.commit();
+				ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				if(resultSet.next()){
+					id = resultSet.getInt(1);
+					bean.setEmployeeId(id);
+				}
+				if(id>0){
+					saveUser(bean, 5);//5 means employee
+				}else{
+					connection.rollback();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				if(e.getMessage().startsWith("ERROR: duplicate key")){
@@ -53,9 +76,8 @@ public class EmployeeMasterDao {
 		return id;
 	}
 	
-	public static ArrayList<EmployeeMasterBean> loadEmployeeInfo(){
-		int count = 0;
-		
+	public static ArrayList<EmployeeMasterBean> loadEmployeeInfo(int companyId){
+		int count = 0;	
 		ArrayList<EmployeeMasterBean> list = new ArrayList<EmployeeMasterBean>();
 		try {
 			Connection connection = null;
@@ -63,7 +85,8 @@ public class EmployeeMasterDao {
 			ResultSet resultSet = null;
 			try {
 				connection = DatabaseHandler.createConnection();
-				preparedStatement = Pbpstm.createQuery(connection, EmployeeMasterSql.loadEmployeeInfosql, null);
+				preparedStatement = Pbpstm.createQuery(connection, PropertyFileAccess.getPropertyObject().getPropValues("load_employeeList", "sql.properties"),
+						Arrays.asList(companyId));
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					EmployeeMasterBean bean = new EmployeeMasterBean();
@@ -126,6 +149,7 @@ public class EmployeeMasterDao {
 								employee.getEsiNumber(),employee.getPfNumber(),
 								employee.getUanNumber(),employee.getDepartment(),
 								employee.getDesignation(),employee.getDojSql(),
+								employee.getPassword(),
 								user,employee.getEmployeeId()));
 				count = preparedStatement.executeUpdate();
 			} catch (Exception e) {
@@ -145,9 +169,44 @@ public class EmployeeMasterDao {
 		}
 		if(count>0){
 			Messagebox.show("Employee information updated successfully.","Update information",Messagebox.OK,Messagebox.INFORMATION);
+			if(employee!=null){
+				MyProfileDao.updateEmployeePassword(employee);
+			}
 		}
 		return count;
 	}
 	
+	public static boolean saveUser(EmployeeMasterBean employee, int rollId){
+		boolean saved = false;
+		try {
+			SQL:{
+					Connection connection = DatabaseHandler.createConnection();
+					PreparedStatement preparedStatement = null;
+					try {
+						preparedStatement = Pbpstm.createQuery(connection, PropertyFileAccess.getPropertyObject().getPropValues("create_user", "sql.properties"), 
+								Arrays.asList(employee.getEmployeeCode().trim(),employee.getEmployeeName().trim(),
+										employee.getPassword().trim(),employee.getEmployeeId(),rollId));
+						int rowCount = preparedStatement.executeUpdate();
+						if(rowCount>0){
+							System.out.println("Employee created!");
+							saved = true;
+						}
+					}  catch (Exception e) {
+						e.printStackTrace();
+					}finally{
+						if(preparedStatement!=null){
+							preparedStatement.close();
+						}
+						if(connection!=null){
+							connection.close();
+						}
+					}
+					 
+				}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return saved;
+	}
 	
 }

@@ -41,6 +41,8 @@ public class LoginController {
 			if(user!=null){		
 				username = (String) session.setAttribute("userId", loginBean.getUserId());
 				session.setAttribute("userName", user.getUserName());
+				session.setAttribute("rollId", user.getRollId());
+				session.setAttribute("primaryId", user.getPrimaryId());
 				Executions.sendRedirect("home.zul");
 				System.out.println("Loging in...");	
 			}else {

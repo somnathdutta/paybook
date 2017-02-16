@@ -23,8 +23,8 @@ public class ComponentMasterController {
 	
 	private ComponentMasterBean componentMasterBean = new ComponentMasterBean();
 	private ComponentMasterBean existiingComponrntMasterBean = new ComponentMasterBean();
-	
-	
+	private ComponentMasterBean componentType = new ComponentMasterBean();
+	private ArrayList<ComponentMasterBean> componentTypeList;
 	private ArrayList<ComponentMasterBean> componentBeanList;
 	
 	public Session session = null;
@@ -40,23 +40,43 @@ public class ComponentMasterController {
 
 		session = Sessions.getCurrent();
 		userId = (String) session.getAttribute("userId");
-		componentBeanList = ComponentMasterService.loadComponents() ;
-
+		onLoad();
 	}
 
+	public void onLoad(){
+		componentTypeList = ComponentMasterService.loadComponentTypes();
+	}
+	
+	public void loadSavedComponents(){
+		componentBeanList = ComponentMasterService.loadComponents() ;
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onSelectType(){
+		System.out.println("Type MAster : "+componentMasterBean.getComponentTypeId()+" type: "+componentMasterBean.getComponentType());
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onClickExisting(){
+		loadSavedComponents();
+	}
+	
 	@Command
 	@NotifyChange("*")
 	public void onClickSave(){
-		int i =0;
 		if(ComponentMasterService.componentsvalidation(componentMasterBean)){
-			i = ComponentMasterDao.saveComponents(userId, componentMasterBean);
-		if(i>0){
-			Messagebox.show("Saved Successfully", "Information", Messagebox.OK, Messagebox.INFORMATION);
-			ComponentMasterService.onComponentClear(componentMasterBean);
-			componentBeanList = ComponentMasterService.loadComponents() ;
-		}
+			if(ComponentMasterDao.saveComponents(userId, componentMasterBean)>0){
+				Messagebox.show("New component saved successfully", "Information", Messagebox.OK, Messagebox.INFORMATION);
+				ComponentMasterService.onComponentClear(componentMasterBean);
+				loadSavedComponents();
+				onLoad();
+			}
 		}
 	}
+	
+	
 	
 	@Command
 	@NotifyChange("*")
@@ -104,6 +124,23 @@ public class ComponentMasterController {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public ComponentMasterBean getComponentType() {
+		return componentType;
+	}
+
+	public void setComponentType(ComponentMasterBean componentType) {
+		this.componentType = componentType;
+	}
+
+	public ArrayList<ComponentMasterBean> getComponentTypeList() {
+		return componentTypeList;
+	}
+
+	public void setComponentTypeList(
+			ArrayList<ComponentMasterBean> componentTypeList) {
+		this.componentTypeList = componentTypeList;
 	}
 	
 

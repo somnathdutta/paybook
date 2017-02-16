@@ -13,7 +13,7 @@ public class EmployeeMasterSql {
 	public static final String updateEmployeeInfoSql = " UPDATE em_employee_info "
 			   		+" SET  employee_code=?, employee_name=?, email_id=?, "
 			   		+"     account_no=?, esi_number=?, pf_number=?, uan_number=?, department=?, "
-			   		+"     designation=?, date_of_joining=?, "
+			   		+"     designation=?, date_of_joining=?,password=?, "
 			   		+"    updated_by=?, update_date=now() "
 			   		+" WHERE employee_info_id=?";
 

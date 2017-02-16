@@ -19,33 +19,31 @@ public class ComponentMasterService {
 	}
 	
 	public static ArrayList<ComponentMasterBean> loadComponents(){
-		ArrayList<ComponentMasterBean> list = new ArrayList<ComponentMasterBean>();
-		list = ComponentMasterDao.loadComponents();
-		return list;
+		return ComponentMasterDao.loadComponents();
+		 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public static boolean componentsvalidation(ComponentMasterBean bean){
 		if(bean.getComponent() != null && bean.getComponent().trim().length() >0){
-			return true;
+			if(bean.getComponentTypeId()>0){
+				return true;
+			}else {
+				Messagebox.show("Please choose component type!", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+			}
 		}else {
-			Messagebox.show("Enter Componet", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+			Messagebox.show("Please enter component name", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);return false;
 		}
 	}
 	
 	public static void onComponentClear(ComponentMasterBean bean){
 		bean.setComponent(null);
+		bean.setComponentType(null);
+		bean.setComponentTypeId(0);
 	}
 	
-	
+	public static ArrayList<ComponentMasterBean> loadComponentTypes(){
+		return ComponentMasterDao.loadComponentTypes();
+	}
 
 	
 	

@@ -3,7 +3,7 @@ package com.appsquad.paybooks.bean;
 public class ComponentMasterBean {
 
 	private Integer componentId;
-	private String component,componentAmount;
+	private String component,componentAmount,componentType;
 	private int slNo;
 	private String isActive;
 	private boolean checked;
@@ -71,6 +71,12 @@ public class ComponentMasterBean {
 	}
 	public void setComponentTypeId(int componentTypeId) {
 		this.componentTypeId = componentTypeId;
+	}
+	public String getComponentType() {
+		return componentType;
+	}
+	public void setComponentType(String componentType) {
+		this.componentType = componentType;
 	}
 	
 	

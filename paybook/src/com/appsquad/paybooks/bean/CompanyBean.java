@@ -2,7 +2,7 @@ package com.appsquad.paybooks.bean;
 
 public class CompanyBean {
 
-	private String companyName,address,workLocation;
+	private String companyName,address,workLocation,companyUserId,companyPassword;
 	private int companyId;
 	private boolean disabled = true,editVisibility = true,updateVisibility = false;
 	
@@ -48,4 +48,17 @@ public class CompanyBean {
 	public void setUpdateVisibility(boolean updateVisibility) {
 		this.updateVisibility = updateVisibility;
 	}
+	public String getCompanyUserId() {
+		return companyUserId;
+	}
+	public void setCompanyUserId(String companyUserId) {
+		this.companyUserId = companyUserId;
+	}
+	public String getCompanyPassword() {
+		return companyPassword;
+	}
+	public void setCompanyPassword(String companyPassword) {
+		this.companyPassword = companyPassword;
+	}
+	
 }

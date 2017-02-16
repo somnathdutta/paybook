@@ -6,6 +6,7 @@ public class LoginBean {
 	private String userId;
 	private String userName;
 	private String password;
+	private int rollId,primaryId;
 	
 	public String getUserName() {
 		return userName;
@@ -30,6 +31,18 @@ public class LoginBean {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public int getRollId() {
+		return rollId;
+	}
+	public void setRollId(int rollId) {
+		this.rollId = rollId;
+	}
+	public int getPrimaryId() {
+		return primaryId;
+	}
+	public void setPrimaryId(int primaryId) {
+		this.primaryId = primaryId;
 	}
 	
 	

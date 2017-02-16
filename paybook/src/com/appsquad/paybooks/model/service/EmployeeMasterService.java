@@ -9,7 +9,7 @@ import com.appsquad.paybooks.dao.EmployeeMasterDao;
 
 public class EmployeeMasterService {
 
-	public static int employeeInfo(String userName, EmployeeMasterBean bean){
+	public static int saveEmployeeInfo(String userName, EmployeeMasterBean bean){
 		return EmployeeMasterDao.saveEmployeeInfo(userName, bean);
 	}
 	
@@ -17,25 +17,31 @@ public class EmployeeMasterService {
 		EmployeeMasterDao.updateEmployeeInfo(employee, userName);
 	}
 	
-	public static ArrayList<EmployeeMasterBean> loadEmpInfo(){
-		ArrayList<EmployeeMasterBean> list = new ArrayList<EmployeeMasterBean>();
-		list = EmployeeMasterDao.loadEmployeeInfo();
-		return list;
+	public static ArrayList<EmployeeMasterBean> loadEmpInfo(int companyId){
+		return EmployeeMasterDao.loadEmployeeInfo(companyId);
 	}
 	
 	public static boolean onEmpInfoValidation(EmployeeMasterBean bean){
-		if(bean.getEmployeeCode() != null && bean.getEmployeeCode().trim().length()>0){
+		if(bean.getCompanyId()>0){
 			if(bean.getEmployeeName() != null){
-				if(bean.getEmailID()!=null && bean.getEmailID().matches(".+@.+\\.[a-z]+")){
-					return true;
+				if(bean.getEmployeeCode() != null && bean.getEmployeeCode().trim().length()>0){
+					if(bean.getPassword() != null && bean.getPassword().trim().length()>0){
+						if(bean.getEmailID()!=null && bean.getEmailID().matches(".+@.+\\.[a-z]+")){
+							return true;
+						}else {
+							Messagebox.show("Please Enter Proper Email id", "Valid Email id required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+						}
+					}else {
+						Messagebox.show("Please Enter Password", "Password required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+					}
 				}else {
-					Messagebox.show("Please Enter Proper Email id", "Valid Email id required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+					Messagebox.show("Please Enter Employee Code", "Employee code required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
 				}
 			}else {
 				Messagebox.show("Please Enter Employee Name", "Employee name required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
 			}
 		}else {
-			Messagebox.show("Please Enter Employee Code", "Employee code required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
+			Messagebox.show("Please choose company", "Company required", Messagebox.OK, Messagebox.EXCLAMATION);return false;
 
 		}
 	}
@@ -52,6 +58,7 @@ public class EmployeeMasterService {
 		bean.setPfNumber(null);
 		bean.setEmailID(null);
 		bean.setUanNumber(null);
+		bean.setPassword(null);
 	}
 	
 	//!email.matches(".+@.+\\.[a-z]+")

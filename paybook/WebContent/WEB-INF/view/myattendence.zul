@@ -1,0 +1,80 @@
+<?page title="My Attendence" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="My Attendence" border="normal"
+	apply="org.zkoss.bind.BindComposer" viewModel="@id('vm')@init('com.appsquad.paybooks.controller.MyAttendenceController')">
+		
+		<tabbox>
+			<tabs>
+				<tab label="Give Attendence" />
+				<tab label="View Attendences" onClick="@command('OnClickMyAttendence')"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<div align="center">
+						<grid sclass="fgrid" width="30%">
+							<columns>
+								<column label="Time" align="center"
+									width="190px" />
+								<column label="Action" align="center" 
+									width="100px"/>
+								
+							</columns>
+							<rows>
+								<row>
+									<datebox format="long+medium" value="@bind(vm.attendenceBean.checkInTime)"
+										buttonVisible="false" readonly="true" width="100%" />
+									<button label="Check in" disabled="@bind(vm.attendenceBean.checkInDisabled)"
+										style="font-weight: bold" width="100%" onClick="@command('onClickCheckIn')"/>
+								</row>
+								<row>
+									<datebox format="long+medium" value="@bind(vm.attendenceBean.checkOutTime)"
+										buttonVisible="false" readonly="true" width="100%" />
+									<button label="Check out" disabled="@bind(vm.attendenceBean.checkOutDisabled)"
+										style="font-weight: bold" onClick="@command('onClickCheckOut')" />
+									
+								</row>
+							</rows>
+						</grid>
+					</div>
+				</tabpanel>
+				
+				<tabpanel>
+					<div align="center">
+					<combobox model="@bind(vm.monthist)" 
+					selectedItem="@bind(vm.monthMasterBean)" 
+					value="@bind(vm.monthMasterBean.month)" onSelect="@command('onSelectMonth')"
+					readonly="true" placeholder="Select Month" width="150px">
+			  			<template name="model" var = "v">
+			  				<comboitem value="@bind(v.monthId)" label="@bind(v.month)"></comboitem>
+			  			</template>
+			  		</combobox>
+					<separator></separator>
+					<grid sclass="fgrid" width="70%" model="@bind(vm.attendenceBeanList)"
+					mold="paging" pageSize="10">
+						<columns>
+							<column label="Date" align="center" width="150px"/>
+							<column label="Check in time" align="center"/>
+							<column label="Check out time" align="center"/>
+							<column label="Status" align="center"/>
+						</columns>
+						<rows>
+						<template name="model" var="v">
+							<row>
+								<datebox format="dd-MM-yyyy" readonly="true" width="100%"
+								buttonVisible="false" value="@bind(v.attendenceDate)" />
+								<textbox  value="@bind(v.chkInStr)"
+										readonly="true" width="100%" />
+								<textbox value="@bind(v.chkOutStr)"
+									readonly="true" width="100%" />
+								<textbox readonly="true" value="@bind(v.status)"/>				
+							</row>
+						</template>	
+						</rows>
+					</grid>
+					</div>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+	</window>
+</zk>

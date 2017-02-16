@@ -27,10 +27,58 @@
 					   	</columns>
 					   	<rows>
 					   		<row>
-					   			<label value="Employee Code" style="font-weight:bold" />
-					   			<textbox value="@bind(vm.employeeMasterBean.employeeCode)" width="100%"/>
+					   			<label value="Company" style="font-weight:bold" />
+					   			<bandbox autodrop="true" buttonVisible="@bind(vm.searchBtnVisible)"
+					   				readonly="true" id="cmpnm"
+					   				value="@bind(vm.companyBean.companyName)"
+					   				placeholder="Select Company" width="180px">
+					   				<bandpopup>
+					   					<hbox>
+					   						<textbox
+					   							value="@bind(vm.employeeMasterBean.employeeSearch)"
+					   							onChange="@command('onChangeEmployeeName')"
+					   							placeholder="Search by Company" width="150px">
+					   						</textbox>
+					   						<button label="Serach"
+					   							onClick="@command('onChangeEmployeeName')">
+					   						</button>
+					   						<button label="Clear"
+					   							onClick="@command('onClearEmployeeName')">
+					   						</button>
+					   					</hbox>
+					   					<space></space>
+					   					<listbox width="280px"
+					   						model="@bind(vm.companyBeanList)"
+					   						selectedItem="@bind(vm.companyBean)"
+					   						onSelect="@command('onSelctCompany')" mold="paging"
+					   						pageSize="5">
+					   						<listhead
+					   							sizable="true">
+					   							<listheader
+					   								label="Company">
+					   							</listheader>
+					   						</listhead>
+
+					   						<template name="model"
+					   							var="v">
+					   							<listitem>
+					   								<listcell
+					   									label="@load(v.companyName)">
+					   								</listcell>
+					   							</listitem>
+					   						</template>
+
+					   					</listbox>
+					   				</bandpopup>
+					   			</bandbox>
 					   			<label value="Employee Name" style="font-weight:bold"/>
 					   			<textbox value="@bind(vm.employeeMasterBean.employeeName)" width="100%"/>
+					   		</row>
+					   		<row>
+					   			<label value="Employee Code" style="font-weight:bold" />
+					   			<textbox value="@bind(vm.employeeMasterBean.employeeCode)" width="100%"/>
+					   			<label value="Employee Password" style="font-weight:bold"/>
+					   			<textbox value="@bind(vm.employeeMasterBean.password)" type="password" width="100%"/>
 					   		</row>
 					   		<row>
 					   			<label value="Designation" style="font-weight:bold"/>

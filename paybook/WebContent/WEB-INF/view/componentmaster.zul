@@ -8,18 +8,22 @@
 		<tabbox>
 			<tabs>
 				<tab label="Add Components"></tab>
-				<tab label="Existing Components"></tab>
+				<tab label="Existing Components" onClick="@command('onClickExisting')"></tab>
 			
 			</tabs>
 			<tabpanels>
 	            <tabpanel>
 					<div>
 					   <hlayout spacing="20px">	
-						   <textbox placeholder="Component Name" value="@bind(vm.componentMasterBean.component)"/>
-						   <combobox width="100px">
-						   	<comboitem label="Earnings" value="@bind(vm.componentMasterBean.componentTypeId)"/>
-						   	<comboitem label="Deductions" value="@bind()"/>
+						   
+						   <combobox model="@bind(vm.componentTypeList)" placeholder="Component Type"  width="150px"
+						   value="@bind(vm.componentMasterBean.componentType)" selectedItem="@bind(vm.componentMasterBean)"
+						   onSelect="@command('onSelectType')" readonly="true" autocomplete="true" autodrop="true">
+						   	<template name="model" var="v">
+						   		<comboitem label="@bind(v.componentType)" value="@bind(v.componentTypeId)" width="100%"/>
+						   	</template>
 						   </combobox>
+						   <textbox placeholder="Component Name" value="@bind(vm.componentMasterBean.component)"/>
 						   <button label="Save Components" onClick="@command('onClickSave')" style="font-weight: bold"/>	
 				       </hlayout> 		
 					   	
@@ -33,6 +37,7 @@
 					   		<columns>
 					   		    <column label="Sl No" align="center" width="50px"></column>
 					   			<column label="Component" align="center"></column>
+					   			<column label="Component Type" align="center"></column>
 					   			<column label="Active" align="center"></column>
 					   			<column label="Action" align="left"></column>
 					   		</columns>
@@ -41,6 +46,7 @@
 					   		    <row>
 					   				<label value="@bind(v.slNo)"></label>
 					   				<textbox value="@bind(v.component)" readonly="true" width="100%"></textbox>
+					   				<textbox value="@bind(v.componentType)" readonly="true" width="100%"></textbox>
 					   				<textbox value="@bind(v.isActive)" readonly="true" width="100%"></textbox>
 					   				<button label="Update" onClick="@command('onClickUpdate', bean = v)" style="font-weight: bold"></button>
 					   			</row>

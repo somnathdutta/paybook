@@ -1,0 +1,6 @@
+<?page title="My Slips" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="My Slips" border="normal">
+New Content Here!
+</window>
+</zk>

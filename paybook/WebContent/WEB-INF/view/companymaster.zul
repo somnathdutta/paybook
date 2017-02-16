@@ -14,6 +14,14 @@
 				<textbox value="@bind(vm.companyBean.companyName)"/>
 			</row>
 			<row>
+				<label value="Company Id" style="font-weight:bold"/>
+				<textbox value="@bind(vm.companyBean.companyUserId)" onChange="@command('onChangeUserId')"/>
+			</row>
+			<row>
+				<label value="Company Password" style="font-weight:bold"/>
+				<textbox value="@bind(vm.companyBean.companyPassword)" type="password"/>
+			</row>
+			<row>
 				<label value="Company Address" style="font-weight:bold"/>
 				<textbox value="@bind(vm.companyBean.address)" multiline="true" rows="2" width="100%"/>
 			</row>
@@ -22,15 +30,16 @@
 				<textbox value="@bind(vm.companyBean.workLocation)" />
 			</row>	
 			<row>
-				<button label="Save" style="font-weight:bold" onClick="@command('onClickSave')"/>
+				<button label="Save" style="font-weight:bold" onClick="@command('onClickSave')" disabled="@bind(vm.saveDisabled)"/>
 				<button label="Cancel" style="font-weight:bold" onClick="@command('onClickCancel')"/>
 			</row>
 		</rows>
 	</grid>
 	<separator/>
-	<grid model="@bind(vm.companyBeanList)">
+	<grid model="@bind(vm.companyBeanList)" mold="paging" pageSize="7">
 		<columns>
 			<column label="Company Name" align="center"/>
+			<column label="Company User Id" align="center"/>
 			<column label="Company Address" align="center"/>
 			<column label="Work Location" align="center"/>
 			<column label="Update" align="center"/>
@@ -39,6 +48,7 @@
 			<template name="model" var="v">
 				<row>
 					<textbox value="@bind(v.companyName)" readonly="@bind(v.disabled)" width="100%"/>
+					<textbox value="@bind(v.companyUserId)" readonly="true" width="100%"/>
 					<textbox value="@bind(v.address)" readonly="@bind(v.disabled)"  width="100%"/>
 					<textbox value="@bind(v.workLocation)" readonly="@bind(v.disabled)" width="100%"/>
 					<hlayout>

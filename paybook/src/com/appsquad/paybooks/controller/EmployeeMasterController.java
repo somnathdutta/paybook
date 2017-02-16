@@ -16,16 +16,24 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
+import com.appsquad.paybooks.model.service.CompanyService;
 import com.appsquad.paybooks.model.service.EmployeeMasterService;
+import com.appsquad.paybooks.model.service.GeneratePayslipService;
 import com.appsquad.paybooks.model.service.LoadAllListService;
 
 public class EmployeeMasterController {
 	
 	private EmployeeMasterBean employeeMasterBean = new EmployeeMasterBean();
+	private CompanyBean companyBean = new CompanyBean();
+	private ArrayList<CompanyBean> companyBeanList ;
+	private ArrayList<CompanyBean> dbcompanyBeanList ;
 	private EmployeeMasterBean existiingEmployeeMasterBean = new EmployeeMasterBean();
 	//private EmployeeMasterBean employeeMasterBean = new EmployeeMasterBean();
 	private ArrayList<EmployeeMasterBean> employeeList;
@@ -37,7 +45,13 @@ public class EmployeeMasterController {
 
 	private String userId;
 	
-	private Integer roleId;
+	private int roleId, companyId;
+	
+	
+	private boolean searchBtnVisible = true;
+	
+	@Wire("#cmpnm")
+	private Bandbox cmpBandBox;
 	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
@@ -47,15 +61,37 @@ public class EmployeeMasterController {
 		System.out.println("employeemaster.zul");
 		session = Sessions.getCurrent();
 		userId = (String) session.getAttribute("userId");
+		companyId = (int)session.getAttribute("primaryId");
+		if((int) session.getAttribute("rollId")==3){//company login
+			searchBtnVisible = false;
+			companyBean.setCompanyName((String) session.getAttribute("userName"));
+			employeeMasterBean.setCompanyId(companyId);
+		}else{
+			loadCompanyList();
+		}
+		
+	}
+	
+	public void loadCompanyList(){
+		dbcompanyBeanList = CompanyService.loadAllCompanyList();
+		companyBeanList = dbcompanyBeanList;
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onSelctCompany(){
+		cmpBandBox.close();
+		employeeMasterBean.setCompanyId(companyBean.getCompanyId());
 	}
 	
 	public void onLoad(){
-		dbEmployeeList = LoadAllListService.loadEmployeeInfo();
+		//dbEmployeeList = LoadAllListService.loadEmployeeInfo();
+		dbEmployeeList = EmployeeMasterService.loadEmpInfo(companyId);
 		employeeList = dbEmployeeList;
 	}
 
 	public void loadExistingEmployees(){
-		employeeMasterBeanList = EmployeeMasterService.loadEmpInfo();
+		employeeMasterBeanList = EmployeeMasterService.loadEmpInfo(companyId);
 	}
 	
 	
@@ -75,7 +111,7 @@ public class EmployeeMasterController {
 	@NotifyChange("*")
 	public void onClickSave(){
 		if(EmployeeMasterService.onEmpInfoValidation(employeeMasterBean)){
-			if(EmployeeMasterService.employeeInfo(userId, employeeMasterBean)>0){
+			if(EmployeeMasterService.saveEmployeeInfo(userId, employeeMasterBean)>0){
 				Messagebox.show("Employee information saved successfully", "Successful Information", Messagebox.OK, Messagebox.INFORMATION);
 				EmployeeMasterService.onEmpInfoClear(employeeMasterBean);
 			}
@@ -176,6 +212,46 @@ public class EmployeeMasterController {
 
 	public void setDbEmployeeList(ArrayList<EmployeeMasterBean> dbEmployeeList) {
 		this.dbEmployeeList = dbEmployeeList;
+	}
+
+	public CompanyBean getCompanyBean() {
+		return companyBean;
+	}
+
+	public void setCompanyBean(CompanyBean companyBean) {
+		this.companyBean = companyBean;
+	}
+
+	public ArrayList<CompanyBean> getCompanyBeanList() {
+		return companyBeanList;
+	}
+
+	public void setCompanyBeanList(ArrayList<CompanyBean> companyBeanList) {
+		this.companyBeanList = companyBeanList;
+	}
+
+	public ArrayList<CompanyBean> getDbcompanyBeanList() {
+		return dbcompanyBeanList;
+	}
+
+	public void setDbcompanyBeanList(ArrayList<CompanyBean> dbcompanyBeanList) {
+		this.dbcompanyBeanList = dbcompanyBeanList;
+	}
+
+	public boolean isSearchBtnVisible() {
+		return searchBtnVisible;
+	}
+
+	public void setSearchBtnVisible(boolean searchBtnVisible) {
+		this.searchBtnVisible = searchBtnVisible;
+	}
+
+	public Bandbox getCmpBandBox() {
+		return cmpBandBox;
+	}
+
+	public void setCmpBandBox(Bandbox cmpBandBox) {
+		this.cmpBandBox = cmpBandBox;
 	}
 	
 

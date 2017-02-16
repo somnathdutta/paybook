@@ -1,0 +1,6 @@
+<?page title="My Leaves" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="My Leaves" border="normal">
+New Content Here!
+</window>
+</zk>

@@ -26,6 +26,8 @@ public class LoginDao {
 				if(resultSet.next()){
 					loginBean = new LoginBean();
 					loginBean.setUserName(resultSet.getString("user_name"));
+					loginBean.setRollId(resultSet.getInt("roll_id"));
+					loginBean.setPrimaryId(resultSet.getInt("primary_id"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -16,22 +16,35 @@
 					<!-- <menuitem width="80%" label="@bind(vm.userId)" style="font-weight:bold;font-size:40px;color:#00AAAA;"/> -->
 					<menu image="images/menu.png" style="background:transparent" >
 					<menupopup>
-						<menu label="Master" >
+						<menu label="Master" visible="@bind(vm.master)">
 							<menupopup>
+								<menuitem label="Company" style="font:weight:bold" visible="@bind(vm.company)"
+								onClick='inclResults.setSrc("/WEB-INF/view/companymaster.zul")'/>
+								<menuitem label="My Company" style="font:weight:bold" visible="@bind(vm.mycompany)"
+								/>
 								<menuitem label="Components" style="font:weight:bold" 
 								onClick='inclResults.setSrc("/WEB-INF/view/componentmaster.zul")'></menuitem>
 								<menuitem label="Holidays" style="font:weight:bold"
 								onClick='inclResults.setSrc("/WEB-INF/view/createholiday.zul")'></menuitem>
-								<menuitem label="Company" style="font:weight:bold"
-								onClick='inclResults.setSrc("/WEB-INF/view/companymaster.zul")'/>
+								
 								<menuitem label="Employee" style="font:weight:bold"
 								onClick='inclResults.setSrc("/WEB-INF/view/employeemaster.zul")'></menuitem>
 							</menupopup>
 						</menu>
-						<menuitem label="Component Allocation" style="font:weight:bold"
+						<menuitem label="My Profile" style="font:weight:bold" visible="@bind(vm.profile)"
+						onClick='inclResults.setSrc("/WEB-INF/view/myprofile.zul")'/>
+						<menuitem label="My Attendence" style="font:weight:bold" visible="@bind(vm.attendence)"
+						onClick='inclResults.setSrc("/WEB-INF/view/myattendence.zul")'/>
+						<menuitem label="My Leaves" style="font:weight:bold" visible="@bind(vm.leave)"
+						onClick='inclResults.setSrc("/WEB-INF/view/myleaves.zul")'/>
+						<!-- <menuitem label="My Components" style="font:weight:bold" visible="@bind(vm.component)"/> -->
+						<menuitem label="My Slips" style="font:weight:bold" visible="@bind(vm.slips)"
+						onClick='inclResults.setSrc("/WEB-INF/view/myslip.zul")'/>
+						
+						<menuitem label="Component Allocation" style="font:weight:bold" visible="@bind(vm.componentallocation)"
 						onClick='inclResults.setSrc("/WEB-INF/view/componentallocation.zul")'>
 						</menuitem>	
-						<menuitem label="Payslip" style="font:weight:bold"
+						<menuitem label="Payslip" style="font:weight:bold" visible="@bind(vm.salayslip)"
 						onClick='inclResults.setSrc("/WEB-INF/view/generatepayslip.zul")'>
 						</menuitem>	
 					</menupopup>

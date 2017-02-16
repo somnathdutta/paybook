@@ -12,6 +12,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zul.Messagebox;
 
 import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.dao.CompanyDao;
@@ -28,6 +29,8 @@ public class CompanyMasterController {
 	
 	private ArrayList<CompanyBean> companyBeanList ;
 	
+	private boolean saveDisabled = true; 
+		
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
 			throws Exception {
@@ -46,6 +49,18 @@ public class CompanyMasterController {
 		companyBeanList = CompanyDao.loadSavedCompanyList();
 	}
 
+	@Command
+	@NotifyChange("*")
+	public void onChangeUserId(){
+		System.out.println("Inside on chanege");
+		if(CompanyService.isUserIdExists(companyBeanList, companyBean.getCompanyUserId())){
+			Messagebox.show("Company user id already taken,choose another id.","Alert",Messagebox.OK,Messagebox.EXCLAMATION);
+			saveDisabled = true;
+		}else{
+			saveDisabled = false;
+		}
+	}
+	
 	@Command
 	@NotifyChange("*")
 	public void onClickSave(){
@@ -88,6 +103,8 @@ public class CompanyMasterController {
 	
 	public void clear(){
 		if(companyBean!=null){
+			companyBean.setCompanyUserId(null);
+			companyBean.setCompanyPassword(null);
 			companyBean.setAddress(null);
 			companyBean.setCompanyName(null);
 			companyBean.setWorkLocation(null);
@@ -132,6 +149,14 @@ public class CompanyMasterController {
 
 	public void setCompanyBeanList(ArrayList<CompanyBean> companyBeanList) {
 		this.companyBeanList = companyBeanList;
+	}
+
+	public boolean isSaveDisabled() {
+		return saveDisabled;
+	}
+
+	public void setSaveDisabled(boolean saveDisabled) {
+		this.saveDisabled = saveDisabled;
 	}
 	
 }
