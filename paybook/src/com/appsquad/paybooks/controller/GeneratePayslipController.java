@@ -1,6 +1,7 @@
 package com.appsquad.paybooks.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import com.appsquad.paybooks.bean.MonthMasterBean;
 import com.appsquad.paybooks.dao.LoadAllListDao;
 import com.appsquad.paybooks.model.pdf.PayslipGenerator;
 import com.appsquad.paybooks.model.service.GeneratePayslipService;
+import com.appsquad.paybooks.model.service.HolidayService;
 import com.appsquad.paybooks.model.service.LoadAllListService;
 public class GeneratePayslipController {
 
@@ -131,10 +133,11 @@ public class GeneratePayslipController {
 	@Command
 	@NotifyChange("*")
 	public void onCLickGeneratePayslip(){
-		boolean checked = false;
 		ArrayList<GeneratePayslipBean> checkedList = new ArrayList<GeneratePayslipBean>();
 		for(GeneratePayslipBean bean : generatePayslipBeanList){
 			if(bean.isCheck() && bean.getPresentDays() != null){
+				bean.setYear(yearMasterBean.getYr());
+				bean.setMonthId(monthMasterBean.getMonthId());
 				checkedList.add(bean);
 			}
 		}
@@ -170,7 +173,15 @@ public class GeneratePayslipController {
 	@Command
 	@NotifyChange("*")
 	public void downloadAndSend(@BindingParam("bean") GeneratePayslipBean bean ){
+		
 		if(GeneratePayslipService.isValid(monthMasterBean.getMonth(), yearMasterBean.getYr(), bean)){
+			int noOfDays = GeneratePayslipService.getNoOfDaysInMonth(Integer.parseInt(yearMasterBean.getYr()), monthMasterBean.getMonthId()-1 );
+			bean.setTotalNoOfDaysInMonth(noOfDays);
+			double[] totalAmounts = GeneratePayslipService.getAllAmounts(bean);
+			
+			bean.setTotalEarningAmnt(totalAmounts[0]);
+			bean.setTotalDeductionAmnt(totalAmounts[1]);
+			bean.setNetPayAmount(totalAmounts[2]);
 			generatePaySlip(bean,false);	
 		}
 		//payslipHeaderBean = new GeneratePayslipBean();
@@ -215,6 +226,13 @@ public class GeneratePayslipController {
 		payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
 		payslipHeaderBean.setYear(yearMasterBean.getYr());
 		bean.setLocation(company.getWorkLocation());
+		int noOfDays = GeneratePayslipService.getNoOfDaysInMonth(Integer.parseInt(yearMasterBean.getYr()), monthMasterBean.getMonthId()-1 );
+		bean.setTotalNoOfDaysInMonth(noOfDays);
+		double[] totalAmounts = GeneratePayslipService.getAllAmounts(bean);
+		
+		bean.setTotalEarningAmnt(totalAmounts[0]);
+		bean.setTotalDeductionAmnt(totalAmounts[1]);
+		bean.setNetPayAmount(totalAmounts[2]);
 		String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
 		PayslipGenerator payslipGenerator = new PayslipGenerator();
 		try {
@@ -227,18 +245,7 @@ public class GeneratePayslipController {
 		}	
 	}
 	
-	
-	
-	/*Calendar now = Calendar.getInstance();
-	int year = now.get(Calendar.YEAR);
-	String yearInString = String.valueOf(year);
-	
-	 Calendar cal = Calendar.getInstance();
-	 System.out.println(new SimpleDateFormat("MMM").format(cal.getTime()));
-	
-	*/
-	
-	
+
 	public MonthMasterBean getMonthMasterBean() {
 		return monthMasterBean;
 	}

@@ -11,6 +11,7 @@ import org.zkoss.io.Files;
 import org.zkoss.zul.Messagebox;
 
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
+import com.appsquad.paybooks.model.service.GeneratePayslipService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -110,6 +111,13 @@ public class PayslipGenerator {
 			
 			document.open();
 			for(GeneratePayslipBean bean : beanList){
+				int noOfDays = GeneratePayslipService.getNoOfDaysInMonth(Integer.parseInt(bean.getYear()), bean.getMonthId()-1 );
+				bean.setTotalNoOfDaysInMonth(noOfDays);
+				double[] totalAmounts = GeneratePayslipService.getAllAmounts(bean);
+				
+				bean.setTotalEarningAmnt(totalAmounts[0]);
+				bean.setTotalDeductionAmnt(totalAmounts[1]);
+				bean.setNetPayAmount(totalAmounts[2]);
 			document.add(TestTableGenerator.createHeaderTable(headerBean, tableoutLineWidth));  								// header table
 			document.add(TestTableGenerator.gapTable(tableoutLineWidth));                     									// gap between header and middle table
 			document.add(TestTableGenerator.generateMiddleTable(bean, tableoutLineWidth, normalFont, cellpadding));				// middle table (employee details)  bean will be changed

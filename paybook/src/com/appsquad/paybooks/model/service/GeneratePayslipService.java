@@ -4,16 +4,50 @@ import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 import org.zkoss.zul.Messagebox;
 
+import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.dao.GeneratePayslipDao;
 
 public class GeneratePayslipService {
 
+	public static int getNoOfDaysInMonth(int year, int month){
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month);
+		return cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	public static double[] getAllAmounts(GeneratePayslipBean bean){
+		double totalEarningAmout = 0,totalDeductionAmount =0 ,netPay = 0;
+		for(ComponentMasterBean component : bean.getComponentList()){
+			if(component.geteOrdId() ==1){		
+				double amount = (component.getAmount()/bean.getTotalNoOfDaysInMonth()) * bean.getPresentDays();
+				totalEarningAmout = totalEarningAmout + amount;
+				
+			}
+			if(component.geteOrdId() == 2){
+				double amount =(component.getAmount()/bean.getTotalNoOfDaysInMonth()) * bean.getPresentDays() ;
+				totalDeductionAmount = totalDeductionAmount+ amount;
+				
+			}
+		}
+		/*System.out.println("Total earn : "+totalEarningAmout
+				+" Toal ded: "+totalDeductionAmount+" Net : "+netPay);*/
+		
+		netPay = totalEarningAmout - totalDeductionAmount;
+		double totals[]  = new double[3];
+			totals[0] = totalEarningAmout;
+			totals[1] = totalDeductionAmount;
+			totals[2] = netPay;
+		return totals;
+	}
+	
 	public static ArrayList<GeneratePayslipBean> loadempSalDetails(int companyId){
 		return GeneratePayslipDao.loadEmpSalDetails(companyId);
 	}

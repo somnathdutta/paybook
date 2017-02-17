@@ -13,7 +13,7 @@ public class GeneratePayslipBean {
 	private String designation;
 	private String emailId;
 	private String accNo;
-	
+	private int totalNoOfDaysInMonth;
 	private Date dojutil;
 	private java.sql.Date dojSql;
 	private String dojStr;
@@ -28,7 +28,7 @@ public class GeneratePayslipBean {
 	private String companyName;
 	private String companyAddress;
 	
-	private Double totalEarningAmnt;
+	private Double totalEarningAmnt,netPayAmount;
 	private Double totalDeductionAmnt;
 	
 	private String transferMode = "Bank Transfer";
@@ -204,6 +204,18 @@ public class GeneratePayslipBean {
 	}
 	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
+	}
+	public int getTotalNoOfDaysInMonth() {
+		return totalNoOfDaysInMonth;
+	}
+	public void setTotalNoOfDaysInMonth(int totalNoOfDaysInMonth) {
+		this.totalNoOfDaysInMonth = totalNoOfDaysInMonth;
+	}
+	public Double getNetPayAmount() {
+		return netPayAmount;
+	}
+	public void setNetPayAmount(Double netPayAmount) {
+		this.netPayAmount = netPayAmount;
 	}
 	
 	

@@ -1,5 +1,6 @@
 package com.appsquad.paybooks.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AttendenceBean {
@@ -7,7 +8,9 @@ public class AttendenceBean {
 	private int empId,statusId,companyId;
 	private String status,chkInStr,chkOutStr,empName;
 	private Date checkInTime,checkOutTime,attendenceDate;
-	private boolean  checkInDisabled = false,checkOutDisabled = true;
+	private boolean  checkInDisabled = false,checkOutDisabled = true,checked=false;
+	private ArrayList<StatusBean> statusBeanList = new ArrayList<StatusBean>();
+	
 	public int getEmpId() {
 		return empId;
 	}
@@ -79,5 +82,17 @@ public class AttendenceBean {
 	}
 	public void setEmpName(String empName) {
 		this.empName = empName;
+	}
+	public ArrayList<StatusBean> getStatusBeanList() {
+		return statusBeanList;
+	}
+	public void setStatusBeanList(ArrayList<StatusBean> statusBeanList) {
+		this.statusBeanList = statusBeanList;
+	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 }

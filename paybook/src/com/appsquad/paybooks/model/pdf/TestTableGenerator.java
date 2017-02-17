@@ -495,14 +495,15 @@ public class TestTableGenerator {
 	}
 	
 	public static PdfPTable addEarningComponentsAmnt(GeneratePayslipBean earningbean, Font normalFont){
-		
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
-			System.out.println("EarnCom:: "+bean.getComponent());
+			
 			if(bean.geteOrdId() == 1){
-			Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
-			cell = new PdfPCell(deductAmnt);
+			 double earningAmout = (bean.getAmount()/earningbean.getTotalNoOfDaysInMonth())*earningbean.getPresentDays();	
+			//Phrase earnAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
+			 Phrase earnAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(earningAmout), normalFont);
+			cell = new PdfPCell(earnAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
@@ -553,8 +554,11 @@ public class TestTableGenerator {
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		for(ComponentMasterBean bean : earningbean.getComponentList()){
+			
 			if(bean.geteOrdId() == 2){
-			Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
+				 double deductionAmout = (bean.getAmount()/earningbean.getTotalNoOfDaysInMonth())*earningbean.getPresentDays();	
+			//Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(bean.getAmount()), normalFont);
+			Phrase deductAmnt = new Phrase(""+ DesimalFormat.twoDecimalFormat(deductionAmout), normalFont);
 			cell = new PdfPCell(deductAmnt);
 			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			cell.setBorder(Rectangle.NO_BORDER);
@@ -572,7 +576,20 @@ public class TestTableGenerator {
 		PdfPTable table = new PdfPTable(2);
 		table.setWidthPercentage(tableWidth);
 		table.setWidths(colWidths);
+		/*double totalEarningAmout = 0,totalDeductionAmount =0 ;
 		
+		for(ComponentMasterBean component : bean.getComponentList()){
+			if(component.geteOrdId() ==1){
+				component.setAmount((component.getAmount()/bean.getTotalNoOfDaysInMonth()) * bean.getPresentDays() );
+				totalEarningAmout = totalEarningAmout + component.getAmount();
+			}
+			if(component.geteOrdId() == 2){
+				component.setAmount((component.getAmount()/bean.getTotalNoOfDaysInMonth()) * bean.getPresentDays() );
+				totalDeductionAmount = totalDeductionAmount+ component.getAmount();
+			}
+		}*/
+		
+		//Phrase earnAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalEarningAmnt()), boldFont);
 		Phrase earnAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalEarningAmnt()), boldFont);
 		cell = new PdfPCell(earnAmnt);
 		cell.setBorderWidth(2f);
@@ -580,6 +597,7 @@ public class TestTableGenerator {
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell);
 		
+		//Phrase deductAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalDeductionAmnt()), boldFont);
 		Phrase deductAmnt = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getTotalDeductionAmnt()), boldFont);
 		cell = new PdfPCell(deductAmnt);
 		cell.setBorderWidth(2f);
@@ -694,10 +712,11 @@ public class TestTableGenerator {
 		
 		double netpayment = bean.getTotalEarningAmnt()-bean.getTotalDeductionAmnt();
 		
-		String amountString = NumberToWord.numToStr(netpayment);
+		//String amountString = NumberToWord.numToStr(netpayment);
 		
-		
-		Phrase netpay = new Phrase(""+DesimalFormat.twoDecimalFormat(netpayment));
+		String amountString = NumberToWord.numToStr(bean.getNetPayAmount());
+		//Phrase netpay = new Phrase(""+DesimalFormat.twoDecimalFormat(netpayment));
+		Phrase netpay = new Phrase(""+DesimalFormat.twoDecimalFormat(bean.getNetPayAmount()));
 		PdfPCell cell1 = new PdfPCell(netpay);
 		cell1.setBorder(Rectangle.NO_BORDER);
 		

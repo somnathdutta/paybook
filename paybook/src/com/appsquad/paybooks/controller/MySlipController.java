@@ -91,8 +91,7 @@ public class MySlipController {
 		PayslipGenerator payslipGenerator = new PayslipGenerator();
 		try {
 			String filePath = payslipGenerator.getSlipDetailsPerEmp(path, generatePayslipBean, payslipHeaderBean, false);	
-			System.out.println("Download path: "+filePath);
-			
+			System.out.println("Download path: "+filePath);	
 		} catch (Exception e) {
 			
 			e.printStackTrace();
