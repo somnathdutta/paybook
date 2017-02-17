@@ -180,7 +180,7 @@ public class TestTableGenerator {
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase ESINumber = new Phrase(" ");
+		Phrase ESINumber = new Phrase(empdetBean.getEsi());
 		cell = new PdfPCell(ESINumber);
 		cell.setPaddingBottom(4);
 		cell.setBorder(Rectangle.NO_BORDER);
@@ -261,17 +261,17 @@ public class TestTableGenerator {
 		PdfPTable table = new PdfPTable(1);
 		table.setWidthPercentage(100);
 		
-		Phrase PFNo = new Phrase(" ");
+		Phrase PFNo = new Phrase(empdetBean.getPf());
 		cell = new PdfPCell(PFNo);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		 
-		Phrase uan = new Phrase(" ");
+		Phrase uan = new Phrase(empdetBean.getUan());
 		cell = new PdfPCell(uan);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);
 		
-		Phrase workLocation = new Phrase("Kolkata", normalFont);
+		Phrase workLocation = new Phrase(empdetBean.getLocation(), normalFont);
 		cell = new PdfPCell(workLocation);
 		cell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(cell);

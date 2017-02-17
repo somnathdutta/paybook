@@ -33,7 +33,7 @@
 					   				value="@bind(vm.companyBean.companyName)"
 					   				placeholder="Select Company" width="180px">
 					   				<bandpopup>
-					   					<hbox>
+					   					<!-- <hbox>
 					   						<textbox
 					   							value="@bind(vm.employeeMasterBean.employeeSearch)"
 					   							onChange="@command('onChangeEmployeeName')"
@@ -45,7 +45,7 @@
 					   						<button label="Clear"
 					   							onClick="@command('onClearEmployeeName')">
 					   						</button>
-					   					</hbox>
+					   					</hbox> -->
 					   					<space></space>
 					   					<listbox width="280px"
 					   						model="@bind(vm.companyBeanList)"

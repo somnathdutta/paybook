@@ -15,7 +15,7 @@ import com.appsquad.paybooks.sql.ComponentAllocationSql;
 
 public class ComponentAllocationDao {
 
-	public static ArrayList<ComponentMasterBean> loadComponent(int empId){
+	public static ArrayList<ComponentMasterBean> loadComponent(int empId,int companyId){
 		ArrayList<ComponentMasterBean> list = new ArrayList<ComponentMasterBean>();
 		if(list.size()>0){
 			list.clear();
@@ -26,7 +26,8 @@ public class ComponentAllocationDao {
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			try {
-				preparedStatement = Pbpstm.createQuery(connection, ComponentAllocationSql.loadSalaryComponentresectiveemployee, Arrays.asList(empId));
+				preparedStatement = Pbpstm.createQuery(connection, ComponentAllocationSql.loadSalaryComponentresectiveemployee, 
+						Arrays.asList(empId,companyId));
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					ComponentMasterBean bean = new ComponentMasterBean();

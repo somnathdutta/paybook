@@ -24,7 +24,8 @@ public class HomeController {
 	
 	private boolean master = false,profile=false,slips=false,
 					attendence=false,leave=false,company=false,mycompany=false,
-					component=false,salayslip =false,componentallocation = false;
+					component=false,salayslip =false,componentallocation = false,
+					companylink=false;
 	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
@@ -67,7 +68,7 @@ public class HomeController {
 		if(roleId==5){//Employee
 			profile = true;attendence= true;leave=true;slips=true;component=true;
 		}else if(roleId==3){//Company
-			master = true;componentallocation = true;salayslip = true;mycompany = true;
+			master = true;componentallocation = true;salayslip = true;mycompany = true;companylink= true;
 		}else{
 			master = true;componentallocation = true;salayslip = true;company = true;
 		}
@@ -207,6 +208,16 @@ public class HomeController {
 
 	public void setMycompany(boolean mycompany) {
 		this.mycompany = mycompany;
+	}
+
+
+	public boolean isCompanylink() {
+		return companylink;
+	}
+
+
+	public void setCompanylink(boolean companylink) {
+		this.companylink = companylink;
 	}
 	
 	

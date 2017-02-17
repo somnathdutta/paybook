@@ -8,30 +8,16 @@ import com.appsquad.paybooks.dao.LoadAllListDao;
 
 public class LoadAllListService {
 
-	public static ArrayList<EmployeeMasterBean> loadEmployeeInfo(){
-		ArrayList<EmployeeMasterBean> list =new ArrayList<EmployeeMasterBean>();
-		
-		list = LoadAllListDao.loadActiveEmployeeInfo();
-		
-		return list;
+	public static ArrayList<EmployeeMasterBean> loadEmployeeInfo(int companyId){
+		return LoadAllListDao.loadActiveEmployeeInfo(companyId);
 	}
 	
-	public ArrayList<EmployeeMasterBean> loadActvEmployeeInfoSearch(String name){
-		ArrayList<EmployeeMasterBean> list =new ArrayList<EmployeeMasterBean>();
-		
-		LoadAllListDao allListDao = new LoadAllListDao();
-		list = allListDao.loadActiveEmployeeInfoSearch(name);
-		
-		return list;
+	public static ArrayList<EmployeeMasterBean> loadActvEmployeeInfoSearch(String name){
+		return LoadAllListDao.loadActiveEmployeeInfoSearch(name);
 	}
 	
 	public ArrayList<MonthMasterBean> loadAllMonths(){
-		ArrayList<MonthMasterBean> list =new ArrayList<MonthMasterBean>();
-		
-		LoadAllListDao allListDao = new LoadAllListDao();
-		list = allListDao.loadmonths();
-		
-		return list;
+		return LoadAllListDao.loadmonths();
 	}
 	
 	

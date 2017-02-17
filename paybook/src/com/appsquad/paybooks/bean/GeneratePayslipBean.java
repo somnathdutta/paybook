@@ -7,8 +7,8 @@ public class GeneratePayslipBean {
 
 	private Integer slNo;
 	private boolean check;
-	private Integer employeeId;
-	private String employeeCode;
+	private Integer employeeId,companyId;
+	private String employeeCode,esi,pf,uan,department,location;
 	private String employeeName;
 	private String designation;
 	private String emailId;
@@ -168,6 +168,42 @@ public class GeneratePayslipBean {
 	}
 	public void setTransferMode(String transferMode) {
 		this.transferMode = transferMode;
+	}
+	public String getEsi() {
+		return esi;
+	}
+	public void setEsi(String esi) {
+		this.esi = esi;
+	}
+	public String getPf() {
+		return pf;
+	}
+	public void setPf(String pf) {
+		this.pf = pf;
+	}
+	public String getUan() {
+		return uan;
+	}
+	public void setUan(String uan) {
+		this.uan = uan;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public Integer getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
 	
 	

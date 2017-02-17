@@ -28,7 +28,6 @@ public class ComponentAllocationController {
 	private EmployeeMasterBean employeeMasterBean = new EmployeeMasterBean();
 	private ComponentMasterBean componentMasterBean = new ComponentMasterBean();
 	private ComponentAllocationBean componentAllocationBean = new ComponentAllocationBean();
-	private LoadAllListService allListService;
 	private EmployeeMasterBean existingemployeeMasterBean = new EmployeeMasterBean();
 	private ComponentAllocationBean exAllocatedcomponentAllocationBean = new ComponentAllocationBean();
 	
@@ -39,7 +38,7 @@ public class ComponentAllocationController {
 	
 	Session session = null;
 	private String userId;
-	private Integer roleId;
+	private int roleId,primaryId;
 	
 	@Wire("#empnm")
 	 private Bandbox empBandBox;
@@ -56,8 +55,9 @@ public class ComponentAllocationController {
 		System.out.println("componentallocation.zul");
 		session = Sessions.getCurrent();
 		userId = (String) session.getAttribute("userId");
+		primaryId = (int)session.getAttribute("primaryId");
 		//allListService = new LoadAllListService();
-		employeeList = LoadAllListService.loadEmployeeInfo();
+		employeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 		
 	}
 
@@ -67,7 +67,7 @@ public class ComponentAllocationController {
 	public void onSelctEmployeeName(){
 		empBandBox.close();
 		if(employeeMasterBean.getEmployeeId() != null){
-			componentList = ComponentAllocationDao.loadComponent(employeeMasterBean.getEmployeeId());
+			componentList = ComponentAllocationDao.loadComponent(employeeMasterBean.getEmployeeId(),primaryId);
 			if(componentList.size() == 0){
 				Messagebox.show("Not Found any Component", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
@@ -79,17 +79,14 @@ public class ComponentAllocationController {
 	@Command
 	@NotifyChange("*")
 	public void onChangeEmployeeName(){
-		
-		allListService = new LoadAllListService();
-		employeeList = allListService.loadActvEmployeeInfoSearch(employeeMasterBean.getEmployeeSearch());
+		employeeList = LoadAllListService.loadActvEmployeeInfoSearch(employeeMasterBean.getEmployeeSearch());
 	}
 	
 	@Command
 	@NotifyChange("*")
 	public void onClearEmployeeName(){
-		
 		employeeMasterBean.setEmployeeSearch(null);
-		employeeList = allListService.loadEmployeeInfo();
+		employeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 		
 	}
 	
@@ -109,7 +106,7 @@ public class ComponentAllocationController {
 			flag = ComponentAllocationService.insertcomponentwithemp(userId,list, employeeMasterBean.getEmployeeId());
 			if(flag){
 				Messagebox.show("Saved Successfully", "Information", Messagebox.OK, Messagebox.INFORMATION);
-				componentList = ComponentAllocationDao.loadComponent(employeeMasterBean.getEmployeeId());
+				componentList = ComponentAllocationDao.loadComponent(employeeMasterBean.getEmployeeId(),primaryId);
 			}
 		}else {
 			Messagebox.show("Select Components and enter Amount", "Alert", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -126,8 +123,8 @@ public class ComponentAllocationController {
 	public void onClickClear(){
 		if(componentList != null)
 		ComponentAllocationService.onClear(employeeMasterBean, componentList);
-		allListService = new LoadAllListService();
-		employeeList = allListService.loadEmployeeInfo();
+		
+		employeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 	}
 	
 	@Command
@@ -136,7 +133,7 @@ public class ComponentAllocationController {
 		if(employeeList != null){
 			existingemployeeMasterBean.setEmployeeName(null);
 			existingemployeeMasterBean.setEmployeeId(null);
-			employeeList = allListService.loadEmployeeInfo();
+			employeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 			if(exAllocatedcomponentList != null){
 			exAllocatedcomponentList.clear();
 			}
@@ -146,17 +143,14 @@ public class ComponentAllocationController {
 	@Command
 	@NotifyChange("*")
 	public void onChangeExEmployeeName(){
-
-		allListService = new LoadAllListService();
-		employeeList = allListService.loadActvEmployeeInfoSearch(existingemployeeMasterBean.getEmployeeSearch());
-
+		employeeList = LoadAllListService.loadActvEmployeeInfoSearch(existingemployeeMasterBean.getEmployeeSearch());
 	}
 	
 	@Command
 	@NotifyChange("*")
 	public void onClearExEmployeeName(){
 		existingemployeeMasterBean.setEmployeeSearch(null);
-		employeeList = allListService.loadEmployeeInfo();
+		employeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 	}
 	
 	@Command
@@ -265,28 +259,7 @@ public class ComponentAllocationController {
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
-
-
-
-
-
-
-
-	public LoadAllListService getAllListService() {
-		return allListService;
-	}
-
-
-
-
-
-
-
-	public void setAllListService(LoadAllListService allListService) {
-		this.allListService = allListService;
-	}
-
-
+	
 	public EmployeeMasterBean getExistingemployeeMasterBean() {
 		return existingemployeeMasterBean;
 	}

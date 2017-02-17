@@ -10,16 +10,15 @@ import com.appsquad.paybooks.dao.ComponentMasterDao;
 
 public class ComponentMasterService {
 
-
-
 	public static int insertComponent(String userName, ComponentMasterBean bean){
-		int i= 0;
-		i = ComponentMasterDao.saveComponents(userName, bean);
-		return i;
+		if(componentsvalidation(bean)){
+			return ComponentMasterDao.saveComponents(userName, bean);
+		}
+		return 0;
 	}
 	
-	public static ArrayList<ComponentMasterBean> loadComponents(){
-		return ComponentMasterDao.loadComponents();
+	public static ArrayList<ComponentMasterBean> loadComponents(int companyId){
+		return ComponentMasterDao.loadComponents(companyId);
 		 
 	}
 	
@@ -45,6 +44,13 @@ public class ComponentMasterService {
 		return ComponentMasterDao.loadComponentTypes();
 	}
 
-	
+	public static boolean isComponentExists(String component,ArrayList<ComponentMasterBean> componentList){
+		for(ComponentMasterBean comp : componentList){
+			if(comp.getComponent().toUpperCase().equals(component.toUpperCase())){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

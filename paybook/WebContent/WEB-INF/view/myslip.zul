@@ -1,6 +1,35 @@
 <?page title="My Slips" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="My Slips" border="normal">
-New Content Here!
-</window>
+	<window title="My Slips" border="normal"  apply="org.zkoss.bind.BindComposer" 
+	viewModel="@id('vm') @init('com.appsquad.paybooks.controller.MySlipController')">
+		<div>
+			<hlayout spacing="30px">
+
+				<combobox model="@bind(vm.monthist)"
+					selectedItem="@bind(vm.monthMasterBean)"
+					value="@bind(vm.monthMasterBean.month)" readonly="true"
+					placeholder="Select Month" width="150px">
+					<template name="model" var="v">
+						<comboitem value="@bind(v.monthId)"
+							label="@bind(v.month)">
+						</comboitem>
+					</template>
+				</combobox>
+
+				<combobox model="@bind(vm.yearist)"
+					selectedItem="@bind(vm.yearMasterBean)"
+					value="@bind(vm.yearMasterBean.yr)" readonly="true" width="150px"
+					placeholder="Select Year">
+					<template name="model" var="v">
+						<comboitem value="@bind(v.yearId)"
+							label="@bind(v.yr)">
+						</comboitem>
+					</template>
+				</combobox>
+				<button label="Generate Slip"
+					onClick="@command('onClickGenerate')" />
+			</hlayout>
+		</div>
+		
+	</window>
 </zk>

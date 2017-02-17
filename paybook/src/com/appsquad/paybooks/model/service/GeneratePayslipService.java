@@ -14,10 +14,8 @@ import com.appsquad.paybooks.dao.GeneratePayslipDao;
 
 public class GeneratePayslipService {
 
-	public static ArrayList<GeneratePayslipBean> loadempSalDetails(){
-		ArrayList<GeneratePayslipBean> list = new ArrayList<GeneratePayslipBean>();
-		list = GeneratePayslipDao.loadEmpSalDetails();
-		return list;
+	public static ArrayList<GeneratePayslipBean> loadempSalDetails(int companyId){
+		return GeneratePayslipDao.loadEmpSalDetails(companyId);
 	}
 	
 	public static ArrayList<GeneratePayslipBean> loadEmpSearched(String empName,

@@ -5,35 +5,86 @@
 
 
 <div>
-		<tabbox>
-			<tabs>
-				<tab label="Add Components"></tab>
-				<tab label="Existing Components" onClick="@command('onClickExisting')"></tab>
-			
-			</tabs>
-			<tabpanels>
-	            <tabpanel>
-					<div>
-					   <hlayout spacing="20px">	
-						   
-						   <combobox model="@bind(vm.componentTypeList)" placeholder="Component Type"  width="150px"
+		
+					<div align="center">
+					
+					<grid>
+						<columns>
+							<column align="right"/>
+							<column align="left"/>
+							<column align="right"/>
+							<column align="left"/>
+							<column align="right"/>
+							<column align="left"/>
+							<column align="center"/>
+							
+						</columns>
+						<rows>
+							<row>
+								<label value="Company" style="font-weight:bold"/>
+								<bandbox autodrop="true" buttonVisible="@bind(vm.searchBtnVisible)"
+					   				readonly="true" id="cmpnm"
+					   				value="@bind(vm.companyBean.companyName)"
+					   				placeholder="Select Company" width="180px">
+					   				<bandpopup>
+					   					<!-- <hbox>
+					   						<textbox
+					   							value="@bind(vm.employeeMasterBean.employeeSearch)"
+					   							onChange="@command('onChangeEmployeeName')"
+					   							placeholder="Search by Company" width="150px">
+					   						</textbox>
+					   						<button label="Serach"
+					   							onClick="@command('onChangeEmployeeName')">
+					   						</button>
+					   						<button label="Clear"
+					   							onClick="@command('onClearEmployeeName')">
+					   						</button>
+					   					</hbox>
+					   					<space></space> -->
+					   					<listbox width="280px"
+					   						model="@bind(vm.companyBeanList)"
+					   						selectedItem="@bind(vm.companyBean)"
+					   						onSelect="@command('onSelctCompany')" mold="paging"
+					   						pageSize="5">
+					   						<listhead
+					   							sizable="true">
+					   							<listheader
+					   								label="Company">
+					   							</listheader>
+					   						</listhead>
+
+					   						<template name="model"
+					   							var="v">
+					   							<listitem>
+					   								<listcell visible="false"
+					   									label="@load(v.companyId)" >
+					   								</listcell>
+					   								<listcell
+					   									label="@load(v.companyName)" >
+					   								</listcell>
+					   							</listitem>
+					   						</template>
+
+					   					</listbox>
+					   				</bandpopup>
+					   			</bandbox>
+								<label value="Type" style="font-weight:bold"/>
+								
+						   		<combobox model="@bind(vm.componentTypeList)" placeholder="Component Type"  width="150px"
 						   value="@bind(vm.componentMasterBean.componentType)" selectedItem="@bind(vm.componentMasterBean)"
 						   onSelect="@command('onSelectType')" readonly="true" autocomplete="true" autodrop="true">
 						   	<template name="model" var="v">
 						   		<comboitem label="@bind(v.componentType)" value="@bind(v.componentTypeId)" width="100%"/>
 						   	</template>
 						   </combobox>
-						   <textbox placeholder="Component Name" value="@bind(vm.componentMasterBean.component)"/>
-						   <button label="Save Components" onClick="@command('onClickSave')" style="font-weight: bold"/>	
-				       </hlayout> 		
-					   	
-					   
-					</div>
-				</tabpanel>
-				
-				<tabpanel>
-					<div>
-					   <grid model="@bind(vm.componentBeanList)" mold="paging" pageSize="10">
+								<label value="Component Name" style="font-weight:bold"/>
+								<textbox placeholder="Component Name" value="@bind(vm.componentMasterBean.component)"/>
+								 <button label="Save Components" onClick="@command('onClickSave')" style="font-weight: bold"/>
+							</row>
+						</rows>
+					</grid>
+					<separator></separator>
+					  <grid model="@bind(vm.componentBeanList)" mold="paging" pageSize="10">
 					   		<columns>
 					   		    <column label="Sl No" align="center" width="50px"></column>
 					   			<column label="Component" align="center"></column>
@@ -51,15 +102,10 @@
 					   				<button label="Update" onClick="@command('onClickUpdate', bean = v)" style="font-weight: bold"></button>
 					   			</row>
 					   		  </template>	
-					   		</rows>
-					   		
-					   
+					   		</rows>		   
 					   </grid>
 					</div>
-				</tabpanel>
-	
-		 </tabpanels>	
-		</tabbox>
+				
 	</div>
 
 

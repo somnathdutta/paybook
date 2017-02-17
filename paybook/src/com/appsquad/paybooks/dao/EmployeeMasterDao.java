@@ -11,8 +11,10 @@ import org.zkoss.zul.Messagebox;
 
 import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
+import com.appsquad.paybooks.bean.GeneratePayslipBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
+import com.appsquad.paybooks.model.utils.Dateformatter;
 import com.appsquad.paybooks.model.utils.PropertyFileAccess;
 import com.appsquad.paybooks.sql.EmployeeMasterSql;
 
@@ -209,4 +211,92 @@ public class EmployeeMasterDao {
 		return saved;
 	}
 	
+	public static GeneratePayslipBean getEmployeeInfo(int empId){
+		GeneratePayslipBean bean = null;
+		try {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			try {
+				connection = DatabaseHandler.createConnection();
+				preparedStatement = Pbpstm.createQuery(connection, PropertyFileAccess.getPropertyObject().getPropValues("get_employee", "sql.properties"),
+						Arrays.asList(empId));
+				System.out.println(preparedStatement);
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					bean = new GeneratePayslipBean();
+					bean.setEmployeeId(resultSet.getInt("employee_info_id"));
+					bean.setCompanyId(resultSet.getInt("company_id"));
+					bean.setEmployeeCode(resultSet.getString("employee_code"));
+					bean.setEmployeeName(resultSet.getString("employee_name"));
+					bean.setAccNo(resultSet.getString("account_no"));
+					bean.setDepartment(resultSet.getString("department"));
+					bean.setDesignation(resultSet.getString("designation"));
+					bean.setDojSql(resultSet.getDate("date_of_joining"));
+					bean.setEmailId(resultSet.getString("email_id"));
+					bean.setEsi(resultSet.getString("esi_number"));
+					bean.setPf(resultSet.getString("pf_number"));
+					bean.setUan(resultSet.getString("uan_number"));
+					bean.setEmployeeId(resultSet.getInt("employee_info_id"));
+					bean.setEmployeeCode(resultSet.getString("employee_code"));
+					bean.setEmployeeName(resultSet.getString("employee_name"));
+					bean.setDesignation(resultSet.getString("designation"));
+					bean.setEmailId(resultSet.getString("email_id"));
+					bean.setDojStr(resultSet.getString("date_of_joining"));
+					bean.setDojSql(resultSet.getDate("date_of_joining"));
+					if(bean.getDojStr() != null){
+						bean.setDojStr(Dateformatter.toStringDate(bean.getDojStr()));
+					}
+
+					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId(), bean));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Messagebox.show(e.getMessage(), "Error", Messagebox.OK, Messagebox.ERROR);
+				
+			}finally{
+				if(preparedStatement != null){
+					preparedStatement.close();
+				}
+				if(connection != null){
+					connection.close();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bean;
+	}
+	
+	public static int getNoOfDayPresent(int monthId,int empId){
+		int workedDays = 0;
+		try {
+			SQL:{
+					Connection connection = DatabaseHandler.createConnection();
+					PreparedStatement preparedStatement = null;
+					ResultSet resultSet = null;
+					try {
+						preparedStatement = Pbpstm.createQuery(connection,
+								PropertyFileAccess.getPropertyObject().getPropValues("get_present_day", "sql.properties"), 
+								Arrays.asList(monthId,empId));
+						resultSet = preparedStatement.executeQuery();
+						if(resultSet.next()){
+							workedDays = resultSet.getInt("worked_days");
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}finally{
+						if(preparedStatement != null){
+							preparedStatement.close();
+						}
+						if(connection != null){
+							connection.close();
+						}
+					}	
+				}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return workedDays;
+	}
 }

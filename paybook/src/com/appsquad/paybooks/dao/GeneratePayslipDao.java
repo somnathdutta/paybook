@@ -21,7 +21,7 @@ import com.appsquad.paybooks.sql.GeneratePayslipSql;
 
 public class GeneratePayslipDao {
 
-	public static ArrayList<GeneratePayslipBean> loadEmpSalDetails(){
+	public static ArrayList<GeneratePayslipBean> loadEmpSalDetails(int companyId){
 		ArrayList<GeneratePayslipBean> list = new ArrayList<GeneratePayslipBean>();
 		if(list.size()>0){
 			list.clear();
@@ -32,7 +32,8 @@ public class GeneratePayslipDao {
 			PreparedStatement preparedStatement = null;
 			ResultSet resultSet = null;
 			try {
-				preparedStatement = Pbpstm.createQuery(connection, GeneratePayslipSql.loadEmployee, null);
+				preparedStatement = Pbpstm.createQuery(connection, GeneratePayslipSql.loadEmployee, 
+						Arrays.asList(companyId));
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					GeneratePayslipBean bean = new GeneratePayslipBean();
@@ -50,6 +51,10 @@ public class GeneratePayslipDao {
 						bean.setDojStr(Dateformatter.toStringDate(bean.getDojStr()));
 					}
 					bean.setAccNo(resultSet.getString("account_no"));
+					bean.setEsi(resultSet.getString("esi_number"));
+					bean.setPf(resultSet.getString("pf_number"));
+					bean.setUan(resultSet.getString("uan_number"));
+					bean.setDepartment(resultSet.getString("department"));
 					bean.setComponentList(GeneratePayslipDao.loadComponents(connection, bean.getEmployeeId(), bean));
 					
 					list.add(bean);

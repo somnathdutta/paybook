@@ -8,16 +8,18 @@ import java.util.Arrays;
 
 import org.zkoss.zul.Messagebox;
 
+import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
 import com.appsquad.paybooks.bean.MonthMasterBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
+import com.appsquad.paybooks.model.utils.PropertyFileAccess;
 import com.appsquad.paybooks.sql.LoadAllListSql;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class LoadAllListDao {
 
-	public static ArrayList<EmployeeMasterBean> loadActiveEmployeeInfo(){
+	public static ArrayList<EmployeeMasterBean> loadActiveEmployeeInfo(int companyId){
 		int count =0;
 		ArrayList<EmployeeMasterBean> list =new ArrayList<EmployeeMasterBean>();
 		if(list.size()>0){
@@ -29,7 +31,8 @@ public class LoadAllListDao {
 			ResultSet resultSet = null;
 			try {
 				connection = DatabaseHandler.createConnection();
-				preparedStatement = Pbpstm.createQuery(connection, LoadAllListSql.loadEmployeeInfo, null);
+				preparedStatement = Pbpstm.createQuery(connection, LoadAllListSql.loadEmployeeInfo, 
+						Arrays.asList(companyId));
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					EmployeeMasterBean bean = new EmployeeMasterBean();
@@ -62,7 +65,7 @@ public class LoadAllListDao {
 	}
 	
 	
-	public ArrayList<EmployeeMasterBean> loadActiveEmployeeInfoSearch(String name){
+	public static ArrayList<EmployeeMasterBean> loadActiveEmployeeInfoSearch(String name){
 		int count =0;
 		ArrayList<EmployeeMasterBean> list =new ArrayList<EmployeeMasterBean>();
 		if(list.size()>0){
@@ -188,7 +191,42 @@ public static ArrayList<MonthMasterBean> loadyears(){
 			e.printStackTrace();
 		}
 		return list;
-	
 	}
 	
+	public static CompanyBean getCompany(int companyId){
+		CompanyBean companyBean = null;
+		try {
+			SQL:{
+					Connection connection = DatabaseHandler.createConnection();
+					PreparedStatement preparedStatement = null;
+					ResultSet resultSet = null;
+					try {
+						preparedStatement = Pbpstm.createQuery(connection, 
+								PropertyFileAccess.getPropertyObject().getPropValues("get_company", "sql.properties"), 
+								Arrays.asList(companyId));
+						System.out.println(preparedStatement);
+						resultSet = preparedStatement.executeQuery();
+						if(resultSet.next()){
+							companyBean = new CompanyBean();
+							companyBean.setCompanyId(companyId);
+							companyBean.setCompanyName(resultSet.getString("company"));
+							companyBean.setAddress(resultSet.getString("address"));
+							companyBean.setWorkLocation(resultSet.getString("work_location"));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}finally{
+						if(preparedStatement != null){
+							preparedStatement.close();
+						}
+						if(connection != null){
+							connection.close();
+						}
+					}
+				}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return companyBean;
+	}
 }

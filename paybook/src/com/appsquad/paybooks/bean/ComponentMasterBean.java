@@ -9,7 +9,7 @@ public class ComponentMasterBean {
 	private boolean checked;
 	private Double amount;
 	private Integer eOrdId;
-	private int compoAllocationId,componentTypeId;
+	private int compoAllocationId,componentTypeId,companyId;
 	
 	
 	public Integer getComponentId() {
@@ -77,6 +77,12 @@ public class ComponentMasterBean {
 	}
 	public void setComponentType(String componentType) {
 		this.componentType = componentType;
+	}
+	public int getCompanyId() {
+		return companyId;
+	}
+	public void setCompanyId(int companyId) {
+		this.companyId = companyId;
 	}
 	
 	

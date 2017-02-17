@@ -5,7 +5,7 @@ import java.util.Date;
 public class AttendenceBean {
 
 	private int empId,statusId,companyId;
-	private String status,chkInStr,chkOutStr;
+	private String status,chkInStr,chkOutStr,empName;
 	private Date checkInTime,checkOutTime,attendenceDate;
 	private boolean  checkInDisabled = false,checkOutDisabled = true;
 	public int getEmpId() {
@@ -73,5 +73,11 @@ public class AttendenceBean {
 	}
 	public void setChkOutStr(String chkOutStr) {
 		this.chkOutStr = chkOutStr;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 }

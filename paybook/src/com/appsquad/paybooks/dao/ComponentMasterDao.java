@@ -11,6 +11,7 @@ import org.zkoss.zul.Messagebox;
 import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.database.DatabaseHandler;
 import com.appsquad.paybooks.database.Pbpstm;
+import com.appsquad.paybooks.model.service.ComponentMasterService;
 import com.appsquad.paybooks.model.utils.PropertyFileAccess;
 import com.appsquad.paybooks.sql.ComponentMasterSql;
 
@@ -19,16 +20,15 @@ public class ComponentMasterDao {
 
 	public static int saveComponents(String userName, ComponentMasterBean bean){
 		int id =0;
-		
 		try {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
 			try {
 				connection = DatabaseHandler.createConnection();
 				preparedStatement = Pbpstm.createQuery(connection, ComponentMasterSql.inserComponentSql, 
-						Arrays.asList(bean.getComponent().trim(),bean.getComponentTypeId(),userName));
+						Arrays.asList(bean.getComponent().trim(),bean.getComponentTypeId(),
+								bean.getCompanyId(),userName));
 				id = preparedStatement.executeUpdate();
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 				if(e.getMessage().startsWith("E")){
@@ -48,10 +48,14 @@ public class ComponentMasterDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		if(id>0){
+			Messagebox.show("New component saved successfully", "Information", Messagebox.OK, Messagebox.INFORMATION);
+			ComponentMasterService.onComponentClear(bean);	
+		}
 		return id;
 	}
 	
-	public static ArrayList<ComponentMasterBean> loadComponents(){
+	public static ArrayList<ComponentMasterBean> loadComponents(int companyId){
 		int count = 0;
 		ArrayList<ComponentMasterBean> list = new ArrayList<ComponentMasterBean>();
 		try {
@@ -60,7 +64,8 @@ public class ComponentMasterDao {
 			ResultSet resultSet = null;
 			try {
 				connection = DatabaseHandler.createConnection();
-				preparedStatement = Pbpstm.createQuery(connection, ComponentMasterSql.loadComponentSql, null);
+				preparedStatement = Pbpstm.createQuery(connection, ComponentMasterSql.loadComponentSql, 
+						Arrays.asList(companyId));
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					ComponentMasterBean bean = new ComponentMasterBean();
@@ -126,6 +131,7 @@ public class ComponentMasterDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("List size: "+list.size());
 		return list;
 	}
 	

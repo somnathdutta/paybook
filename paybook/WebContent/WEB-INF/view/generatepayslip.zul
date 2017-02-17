@@ -81,7 +81,7 @@
 		<space></space>
 		<div align="center">
 			<button label="Generate Payslip" onClick="@command('onCLickGeneratePayslip')" 
-			style="font-weight : bold" visible="false"></button>
+			style="font-weight : bold" visible="true"></button>
 		</div>
 	</div>
 	

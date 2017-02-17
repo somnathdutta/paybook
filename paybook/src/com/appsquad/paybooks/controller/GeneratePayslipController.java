@@ -20,6 +20,7 @@ import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import com.appsquad.paybooks.bean.CompanyBean;
 import com.appsquad.paybooks.bean.ComponentMasterBean;
 import com.appsquad.paybooks.bean.EmployeeMasterBean;
 import com.appsquad.paybooks.bean.GeneratePayslipBean;
@@ -45,14 +46,15 @@ public class GeneratePayslipController {
 	private ArrayList<GeneratePayslipBean> searchedGeneratePayslipBeanList;
 	private ArrayList<MonthMasterBean> monthist;
 	private ArrayList<MonthMasterBean> yearist;
-	
-	
+		
 	private Session session = null;
 
 	private String userId;
 	
 	@Wire("#empnm")
 	private Bandbox empBandBox;
+	
+	private int primaryId;
 	
 	@AfterCompose
 	public void initSetup(@ContextParam(ContextType.VIEW) Component view)
@@ -62,15 +64,16 @@ public class GeneratePayslipController {
 		System.out.println("generatepayslip.zul. . .");
 		session = Sessions.getCurrent();
 		userId = (String) session.getAttribute("userId");
+		primaryId = (int)session.getAttribute("primaryId");
 		onLoad();
 	}
 
 	public void onLoad(){
-		dbEmployeeList = LoadAllListService.loadEmployeeInfo();
+		dbEmployeeList = LoadAllListService.loadEmployeeInfo(primaryId);
 		employeeList = dbEmployeeList;
 		monthist = LoadAllListDao.loadmonths();
 		yearist = LoadAllListDao.loadyears();
-		dbGeneratePayslipBeanList = GeneratePayslipService.loadempSalDetails();
+		dbGeneratePayslipBeanList = GeneratePayslipService.loadempSalDetails(primaryId);
 		generatePayslipBeanList =  dbGeneratePayslipBeanList;
 	}
 	
@@ -137,8 +140,15 @@ public class GeneratePayslipController {
 		}
 		
 		if(checkedList.size()>0){
-			payslipHeaderBean.setCompanyName("Appsquad Pvt. Ltd");
+			/*payslipHeaderBean.setCompanyName("Appsquad Pvt. Ltd");
 			payslipHeaderBean.setCompanyAddress("Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata  \n700156");
+			payslipHeaderBean.setMonth(monthMasterBean.getMonth());
+			payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
+			payslipHeaderBean.setYear(yearMasterBean.getYr());*/
+			GeneratePayslipBean payslipHeaderBean = new GeneratePayslipBean();
+			CompanyBean company = LoadAllListDao.getCompany(primaryId);
+			payslipHeaderBean.setCompanyName(company.getCompanyName());
+			payslipHeaderBean.setCompanyAddress(company.getAddress());//"Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata - 700156"
 			payslipHeaderBean.setMonth(monthMasterBean.getMonth());
 			payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
 			payslipHeaderBean.setYear(yearMasterBean.getYr());
@@ -146,7 +156,7 @@ public class GeneratePayslipController {
 			String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
 			PayslipGenerator payslipGenerator = new PayslipGenerator();
 			try {
-				payslipGenerator.getSlipDetails(path, checkedList, payslipHeaderBean);
+				payslipGenerator.getSlipDetails(path, checkedList, payslipHeaderBean,false);
 			
 			} catch (Exception e) {
 				
@@ -197,13 +207,14 @@ public class GeneratePayslipController {
 	
 	
 	public void generatePaySlip(GeneratePayslipBean bean,boolean isMailRequired){
-		payslipHeaderBean = new GeneratePayslipBean();
-		payslipHeaderBean.setCompanyName("Appsquad Pvt. Ltd");
-		payslipHeaderBean.setCompanyAddress("Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata - 700156");
+		GeneratePayslipBean payslipHeaderBean = new GeneratePayslipBean();
+		CompanyBean company = LoadAllListDao.getCompany(primaryId);
+		payslipHeaderBean.setCompanyName(company.getCompanyName());
+		payslipHeaderBean.setCompanyAddress(company.getAddress());//"Martin Burn Ispace, Second Floor, Unit 2C1 Kolkata - 700156"
 		payslipHeaderBean.setMonth(monthMasterBean.getMonth());
 		payslipHeaderBean.setMonthId(monthMasterBean.getMonthId());
 		payslipHeaderBean.setYear(yearMasterBean.getYr());
-		
+		bean.setLocation(company.getWorkLocation());
 		String path = Executions.getCurrent().getDesktop().getWebApp().getRealPath("/");
 		PayslipGenerator payslipGenerator = new PayslipGenerator();
 		try {
