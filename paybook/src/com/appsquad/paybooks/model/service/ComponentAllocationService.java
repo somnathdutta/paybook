@@ -8,8 +8,8 @@ import com.appsquad.paybooks.dao.ComponentAllocationDao;
 
 public class ComponentAllocationService {
 
-	public static ArrayList<ComponentMasterBean> loadcomponent(int empId){
-		ArrayList<ComponentMasterBean> list = ComponentAllocationDao.loadComponent(empId);
+	public static ArrayList<ComponentMasterBean> loadcomponent(int empId,int companyId){
+		ArrayList<ComponentMasterBean> list = ComponentAllocationDao.loadComponent(empId,companyId);
 		return list;
 		
 	}
